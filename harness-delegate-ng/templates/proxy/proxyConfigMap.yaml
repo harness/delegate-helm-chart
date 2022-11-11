@@ -1,0 +1,16 @@
+{{- if .Values.proxyHost }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "harness-delegate-ng.fullname" . }}-proxy
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+data:
+  PROXY_HOST: {{ .Values.proxyHost | quote }}
+  PROXY_PORT: {{ .Values.proxyPort | quote }}
+  PROXY_SCHEME: {{ .Values.proxyScheme | quote }}
+  NO_PROXY: {{ .Values.noProxy | quote }}
+{{- end }}
+
+

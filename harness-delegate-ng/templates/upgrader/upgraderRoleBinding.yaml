@@ -1,0 +1,17 @@
+{{- if .Values.upgrader.enabled -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ template "harness-delegate-ng.fullname" . }}-upgrader-cronjob
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.upgrader.cronJobServiceAccountName }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: upgrader-role
+  apiGroup: ""
+{{- end }}

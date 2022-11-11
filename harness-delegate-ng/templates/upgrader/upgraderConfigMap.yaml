@@ -1,0 +1,19 @@
+{{- if .Values.upgrader.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "harness-delegate-ng.fullname" . }}-upgrader-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+data:
+  config.yaml: |
+    mode: Delegate
+    dryRun: false
+    workloadName: {{ .Values.delegateName }}
+    namespace: {{ .Release.Namespace }}
+    containerName: delegate
+    delegateConfig:
+      accountId: {{ .Values.accountId }}
+      managerHost: {{ .Values.managerEndpoint }}
+{{- end }}

@@ -1,0 +1,33 @@
+{{- if .Values.upgrader.enabled -}}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  labels:
+    {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+  name: {{ template "harness-delegate-ng.fullname" . }}-upgrader-job
+  namespace: {{ .Release.Namespace }}
+spec:
+  schedule: "0 */1 * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 20
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ .Values.upgrader.cronJobServiceAccountName }}
+          restartPolicy: Never
+          containers:
+            - image: {{ .Values.upgrader.upgraderDockerImage }}
+              name: upgrader
+              imagePullPolicy: Always
+              envFrom:
+                - secretRef:
+                    name: {{ .Values.delegateName }}-upgrader-token
+              volumeMounts:
+                - name: config-volume
+                  mountPath: /etc/config
+          volumes:
+            - name: config-volume
+              configMap:
+                name: {{ .Values.delegateName }}-upgrader-config
+{{- end }}

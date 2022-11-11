@@ -1,0 +1,19 @@
+{{- $clusterRoleBindingName := printf "%s-%s" .Release.Namespace .Values.k8sPermissionsType | lower | replace "_" "-" -}}
+{{- if or (eq .Values.k8sPermissionsType "CLUSTER_ADMIN") (eq .Values.k8sPermissionsType "CLUSTER_VIEWER")}}
+{{- if not (lookup "rbac.authorization.k8s.io/v1" "ClusterRoleBinding" .Release.Namespace $clusterRoleBindingName) }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Release.Namespace }}-{{ .Values.k8sPermissionsType | lower | replace "_" "-" }}
+  labels:
+    {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "harness-delegate-ng.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ include "harness-delegate-ng.accessLevel" .}}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- end }}
