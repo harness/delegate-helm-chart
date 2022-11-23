@@ -1,9 +1,8 @@
 {{- if .Values.upgrader.enabled -}}
-{{- if not (lookup "rbac.authorization.k8s.io/v1" "Role" .Release.Namespace "upgrader-role" ) }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: upgrader-role
+  name: {{ template "harness-delegate-ng.fullname" . }}-upgrader
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "harness-delegate-ng.labels" . | nindent 4 }}
@@ -14,5 +13,4 @@ rules:
   - apiGroups: ["extensions", "apps"]
     resources: ["deployments"]
     verbs: ["get", "list", "watch", "create", "update", "patch"]
-{{- end }}
 {{- end }}

@@ -12,6 +12,6 @@ subjects:
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role
-  name: upgrader-role
+  name: {{ template "harness-delegate-ng.fullname" . }}-upgrader
   apiGroup: ""
 {{- end }}
