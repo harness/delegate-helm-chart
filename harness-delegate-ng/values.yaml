@@ -42,7 +42,7 @@ delegateToken: ""
 
 delegateName: harness-delegate-ng
 
-delegateDockerImage: harness/delegate-immutable:75275
+delegateDockerImage: ""
 
 # Endpoint that will point to harness platform. For accessing SAAS platform use the default value.
 managerEndpoint: https://app.harness.io
@@ -57,9 +57,9 @@ startupProbe:
   failureThreshold: 40
 
 livenessProbe:
-  initialDelaySeconds: 10
-  periodSeconds: 10
-  failureThreshold: 2
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  failureThreshold: 3
 
 # Add delegate description and tags
 description: ""
