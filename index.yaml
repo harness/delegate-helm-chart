@@ -3,9 +3,9 @@ entries:
   harness-delegate-ng:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-11-23T12:02:19.430104+05:30"
+    created: "2022-11-29T23:32:23.107566+05:30"
     description: A Helm chart for deploying harness-delegate
-    digest: e0a29df9e076e791718c741e1da2cb4105d5de6d42c3fc2726c48d28a9b08fb3
+    digest: 93b579d756bf753f4d1c05db03f6d8127a6b5c44df880c1861778b974876e8d4
     name: harness-delegate-ng
     type: application
     urls:
@@ -61,4 +61,4 @@ entries:
     urls:
     - harness-delegate-ng-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-23T12:02:19.428765+05:30"
+generated: "2022-11-29T23:32:23.106324+05:30"
