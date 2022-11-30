@@ -41,14 +41,4 @@ entries:
     urls:
     - harness-delegate-ng-1.0.0.tgz
     version: 1.0.0
-  - apiVersion: v2
-    appVersion: 1.16.0
-    created: "2022-08-11T15:44:06.30569+05:30"
-    description: A Helm chart for Kubernetes
-    digest: 160530e3301a47dcdfb1abb977757cfe5c42cdf3ca26a20c7e040566cda9454c
-    name: harness-delegate-ng
-    type: application
-    urls:
-    - harness-delegate-ng-0.1.0.tgz
-    version: 0.1.0
 generated: "2022-11-30T19:00:47.634988+05:30"
