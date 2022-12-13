@@ -24,6 +24,10 @@ spec:
       serviceAccountName: {{ include "harness-delegate-ng.serviceAccountName" . }}
       terminationGracePeriodSeconds: 600
       restartPolicy: Always
+      {{- if .Values.imagePullSecret }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecret }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.delegateDockerImage }}
