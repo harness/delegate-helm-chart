@@ -14,7 +14,7 @@ spec:
     spec:
       template:
         spec:
-          serviceAccountName: {{ .Values.upgrader.cronJobServiceAccountName }}
+          serviceAccountName: {{ template "harness-delegate-ng.fullname" . }}-{{ .Values.upgrader.cronJobServiceAccountName }}
           restartPolicy: Never
           containers:
             - image: {{ .Values.upgrader.upgraderDockerImage }}

@@ -1,4 +1,3 @@
-{{- $clusterRoleBindingName := printf "%s-%s" .Release.Namespace .Values.k8sPermissionsType | lower | replace "_" "-" -}}
 {{- if or (eq .Values.k8sPermissionsType "CLUSTER_ADMIN") (eq .Values.k8sPermissionsType "CLUSTER_VIEWER")}}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
