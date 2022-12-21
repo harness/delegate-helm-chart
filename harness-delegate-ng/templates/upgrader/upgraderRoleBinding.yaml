@@ -8,10 +8,10 @@ metadata:
     {{- include "harness-delegate-ng.labels" . | nindent 4 }}
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.upgrader.cronJobServiceAccountName }}
+    name: {{ template "harness-delegate-ng.fullname" . }}-{{ .Values.upgrader.cronJobServiceAccountName }}
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role
-  name: upgrader-role
+  name: {{ template "harness-delegate-ng.fullname" . }}-upgrader
   apiGroup: ""
 {{- end }}

@@ -1,10 +1,9 @@
 {{- $roleBindingName := print .Release.Namespace "-harness-namespace-admin" -}}
-{{- if not (lookup "rbac.authorization.k8s.io/v1" "RoleBinding" .Release.Namespace $roleBindingName) }}
 {{- if eq .Values.k8sPermissionsType "NAMESPACE_ADMIN" }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ .Release.Namespace }}-harness-namespace-admin
+  name: {{ template "harness-delegate-ng.fullname" . }}-harness-namespace-admin
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "harness-delegate-ng.labels" . | nindent 4 }}
@@ -14,7 +13,6 @@ subjects:
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role
-  name: harness-namespace-admin
+  name: {{ template "harness-delegate-ng.fullname" . }}-harness-namespace-admin
   apiGroup: rbac.authorization.k8s.io
-{{- end }}
 {{- end }}
