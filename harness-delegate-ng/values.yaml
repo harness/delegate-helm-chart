@@ -74,7 +74,7 @@ k8sPermissionsType: "CLUSTER_ADMIN"
 replicas: 1
 
 # Resource limits of container running delegate image in kubernetes
-cpu: 0.5
+cpu: 1
 memory: 2048
 
 # Script to run before delegate installation
