@@ -3,7 +3,17 @@ entries:
   harness-delegate-ng:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-01-03T12:42:25.979644+05:30"
+    created: "2023-02-01T21:04:52.431444607Z"
+    description: A Helm chart for deploying harness-delegate
+    digest: 3cd2eeba18844a7875a2c66a982dfe87794fff927a158f2932302cd0126a48d1
+    name: harness-delegate-ng
+    type: application
+    urls:
+    - harness-delegate-ng-1.0.9.tgz
+    version: 1.0.9
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-02-01T21:04:52.430645895Z"
     description: A Helm chart for deploying harness-delegate
     digest: fb1c0c7b29b210291ef7aa9a25ebf928001f735917156b46a1dfa8169e0ae7cf
     name: harness-delegate-ng
@@ -13,7 +23,7 @@ entries:
     version: 1.0.8
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-01-03T12:42:25.978835+05:30"
+    created: "2023-02-01T21:04:52.429833913Z"
     description: A Helm chart for deploying harness-delegate
     digest: 7e4f4b8bde62bd465e5d331f37ab7500dde6e4f48e7b31e4826eb64f86e2fd33
     name: harness-delegate-ng
@@ -23,7 +33,7 @@ entries:
     version: 1.0.7
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-01-03T12:42:25.977708+05:30"
+    created: "2023-02-01T21:04:52.429032976Z"
     description: A Helm chart for deploying harness-delegate
     digest: 52b7cce92e920cec2b0c4e60b0c647abbbe6f96801debeaf4599dd21b5222f57
     name: harness-delegate-ng
@@ -33,7 +43,7 @@ entries:
     version: 1.0.6
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-01-03T12:42:25.9766+05:30"
+    created: "2023-02-01T21:04:52.428249558Z"
     description: A Helm chart for deploying harness-delegate
     digest: 8474985e68458c90ce77c014f90e1aa7973ef2db112cdb5e03131cb15d8f3ac2
     name: harness-delegate-ng
@@ -43,7 +53,7 @@ entries:
     version: 1.0.5
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-01-03T12:42:25.975884+05:30"
+    created: "2023-02-01T21:04:52.427496825Z"
     description: A Helm chart for deploying harness-delegate
     digest: 8dfb8e28b527b0dc30a61b53abd600071f1c207504f36599c8cd986987227b59
     name: harness-delegate-ng
@@ -53,7 +63,7 @@ entries:
     version: 1.0.4
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-01-03T12:42:25.975333+05:30"
+    created: "2023-02-01T21:04:52.426778577Z"
     description: A Helm chart for deploying harness-delegate
     digest: 2fcc420a2a9cc396a000c977c536f8e5d510b6208312fc88b7c2c0cd2fd159e9
     name: harness-delegate-ng
@@ -63,7 +73,7 @@ entries:
     version: 1.0.3
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-01-03T12:42:25.974636+05:30"
+    created: "2023-02-01T21:04:52.426002372Z"
     description: A Helm chart for deploying harness-delegate
     digest: 1b0689296cc54878fef978c6b00dc5df934a4cd01e0d1619ca645d0b1406df9b
     name: harness-delegate-ng
@@ -73,7 +83,7 @@ entries:
     version: 1.0.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-01-03T12:42:25.973953+05:30"
+    created: "2023-02-01T21:04:52.425305507Z"
     description: A Helm chart for Kubernetes
     digest: 93951364b96a84f1b4a8e2045ff21f2bb94cbe432693c971047b60ca9abed27a
     name: harness-delegate-ng
@@ -81,4 +91,4 @@ entries:
     urls:
     - harness-delegate-ng-1.0.0.tgz
     version: 1.0.0
-generated: "2023-01-03T12:42:25.97247+05:30"
+generated: "2023-02-01T21:04:52.424336201Z"
