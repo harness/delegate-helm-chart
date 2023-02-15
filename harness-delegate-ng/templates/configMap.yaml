@@ -11,7 +11,7 @@ data:
   DEPLOY_MODE: "KUBERNETES"
   DELEGATE_NAME: {{ .Values.delegateName | quote }}
   POLL_FOR_TASKS: {{ .Values.pollForTasks | quote }}
-  NEXT_GEN: "true"
+  NEXT_GEN: {{ .Values.nextGen | quote }}
   DELEGATE_TAGS: {{ .Values.tags | quote }}
   DELEGATE_DESCRIPTION: {{ .Values.description | quote }}
   JAVA_OPTS: {{ .Values.javaOpts }}
@@ -20,5 +20,8 @@ data:
   INIT_SCRIPT: {{ .Values.initScript | quote }}
   CLIENT_TOOLS_DOWNLOAD_DISABLED: "true"
   LOG_STREAMING_SERVICE_URL: {{ .Values.managerEndpoint }}/log-service/
+  {{- if not .Values.nextGen }}
+  DELEGATE_GROUP_NAME: {{ template "harness-delegate-ng.fullname" . }}
+  {{- end }}
 
 
