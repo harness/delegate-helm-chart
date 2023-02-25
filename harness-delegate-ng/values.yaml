@@ -54,13 +54,13 @@ pollForTasks: "false"
 
 # Change this to alter startup probe and liveness probe settings
 startupProbe:
-  initialDelaySeconds: 10
+  initialDelaySeconds: 30
   periodSeconds: 10
-  failureThreshold: 40
+  failureThreshold: 15
 
 livenessProbe:
-  initialDelaySeconds: 30
-  periodSeconds: 20
+  initialDelaySeconds: 10
+  periodSeconds: 10
   failureThreshold: 3
 
 # Add delegate description and tags
