@@ -92,3 +92,5 @@ upgrader:
 securityContext:
   runAsRoot: true
 
+nextGen: true
+
