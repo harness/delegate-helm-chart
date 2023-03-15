@@ -1,0 +1,50 @@
+# This harness-delegate-values.yaml file is compatible harness-delegate-ng helm chart
+
+# You can download the harness-delegate helm chart at
+# https://app.harness.io/storage/harness-download/harness-helm-charts/
+
+# To add Harness helm repo with name harness:
+# helm repo add harness https://app.harness.io/storage/harness-download/harness-helm-charts/
+
+# To install the chart:
+# helm upgrade -i <delegate-name> --namespace <namespace> --create-namespace <repo-name>/harness-delegate-ng -f harness-delegate-values.yaml
+
+# Account Id to which the delegate will be connecting
+accountId: px7xd_BFRCi-pfWPYXVjvw
+
+# Secret identifier associated with the account
+delegateToken: 7c4f3d9e09a2ed729751f0a6385f8405
+
+delegateName: helm-ng-test-ab
+delegateDockerImage: harness/delegate:23.02.78500.minimal
+managerEndpoint: https://qa.harness.io
+
+# Mention tags that will be used to identify delegate
+tags: ""
+description: ""
+
+# Specify access for delegate, CLUSTER_ADMIN, CLUSTER_VIEWER and NAMESPACE_ADMIN are valid entries.
+k8sPermissionsType: CLUSTER_ADMIN
+
+# Resource Configuration
+replicas: 1
+cpu: 0.5
+memory: 2048
+
+# Need to run something specific before delegate starts, enter your script in initScripts.
+initScript: ""
+
+# Specify JAVA_OPTS
+javaOpts: "-Xms64M"
+
+# Set to true to run delegate as root
+securityContext:
+  runAsRoot: true
+
+imagePullSecret: regcredqa
+
+proxyHost: abc.com
+proxyPort: 8080
+proxyScheme: https
+proxyUser: cmFuZG9t
+proxyPassword: cmFuZG9t
