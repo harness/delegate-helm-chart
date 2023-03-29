@@ -42,7 +42,7 @@ delegateToken: ""
 
 delegateName: harness-delegate-ng
 
-delegateDockerImage: ""
+delegateDockerImage: harness/delegate:23.03.78705
 
 imagePullSecret: ""
 
