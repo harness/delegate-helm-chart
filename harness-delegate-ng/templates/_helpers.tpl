@@ -88,4 +88,16 @@ Memory assigned to container in Mi
   {{- printf "%s%s" $allocatedRam "Mi" }}
 {{- end }}
 
+{{/*
+Generate a list of default certificate path with certificate target location
+*/}}
+{{- define "certificate_mount_volumes" -}}
 
+  {{- $default_certs_path := .certs_path }}
+  {{- $mount_volumes := list -}}
+
+  {{- range .ci_mount_targets }}
+    {{- $mount_volumes = append $mount_volumes (printf "%s:%s" $default_certs_path .) -}}
+  {{- end }}
+  {{- join "," $mount_volumes -}}
+{{- end }}

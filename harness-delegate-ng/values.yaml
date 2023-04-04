@@ -97,3 +97,29 @@ securityContext:
 
 nextGen: true
 
+# Configure a Kubernetes build farm to use self-signed certificates
+# https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/configure-a-kubernetes-build-farm-to-use-self-signed-certificates/
+shared_certificates:
+  enabled: false
+  certs_path: /shared/customer-artifacts/certificates/ca.bundle
+  # Example Certificate Chain (Multi-line files )
+  # ca_bundle should be the text of the CA Bundle to include in a secret
+  ca_bundle: # |
+  #   -----BEGIN CERTIFICATE-----
+  #   XXXXXXXXXXXXXXXXXXXXXXXXXXX
+  #   -----END CERTIFICATE-------
+  #   -----BEGIN CERTIFICATE-----
+  #   XXXXXXXXXXXXXXXXXXXXXXXXXXX
+  #   -----END CERTIFICATE-------
+
+  # CI Mount targets are the locations that the secrets should be mounted in the CI Images
+  ci_mount_targets:
+    # - /etc/ssl/certs/ca-bundle.crt
+    # - /etc/ssl/certs/ca-certificates.crt
+    # - /kaniko/ssl/certs/additional-ca-cert-bundle.crt
+
+custom_envs:
+
+custom_mounts:
+
+custom_volumes:
