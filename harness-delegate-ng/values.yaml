@@ -99,6 +99,10 @@ nextGen: true
 
 # Configure a Kubernetes build farm to use self-signed certificates
 # https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/configure-a-kubernetes-build-farm-to-use-self-signed-certificates/
+# CAUTION
+# Make sure that the destination path is not same as the default CA certificate path of the corresponding container image.
+#
+# If you want to override the default certificate file, make sure the Kubernetes secret or config map (from step one) includes all certificates required by the pipelines that will use this build infrastructure.
 shared_certificates:
   enabled: false
   certs_path: /shared/customer-artifacts/certificates/ca.bundle
