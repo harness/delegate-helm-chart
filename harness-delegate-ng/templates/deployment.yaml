@@ -61,6 +61,10 @@ spec:
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          {{- if .Values.extraEnvVars }}
+          env:
+{{ toYaml .Values.extraEnvVars | indent 12 }}
+          {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ template "harness-delegate-ng.fullname" . }}

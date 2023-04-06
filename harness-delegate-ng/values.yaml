@@ -97,3 +97,4 @@ securityContext:
 
 nextGen: true
 
+extraEnvVars: []
