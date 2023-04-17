@@ -1,5 +1,4 @@
-
-{{- if and .Values.shared_certificates.enabled .Values.shared_certificates.ci_mount_targets -}}
+{{- if .Values.shared_certificates.ci_mount_targets -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:

@@ -80,7 +80,7 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
-          {{- if and $.Values.shared_certificates.enabled .Values.shared_certificates.ci_mount_targets }}
+          {{- if $.Values.shared_certificates.ca_bundle }}
             - name: certvol
               mountPath: {{ .Values.shared_certificates.certs_path }}
               subPath:  ca.bundle
@@ -89,7 +89,7 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
       volumes:
-      {{- if and $.Values.shared_certificates.enabled .Values.shared_certificates.ci_mount_targets }}
+      {{- if $.Values.shared_certificates.ca_bundle }}
         - name: certvol
           secret:
             secretName: {{ template "harness-delegate-ng.fullname" . }}-addcerts
