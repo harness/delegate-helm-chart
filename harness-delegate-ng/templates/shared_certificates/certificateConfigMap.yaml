@@ -1,0 +1,16 @@
+{{- if .Values.shared_certificates.ci_mount_targets -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "harness-delegate-ng.fullname" . }}-shared-certificates
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+data:
+  {{- with .Values.shared_certificates }}
+  ADDITIONAL_CERTS_PATH: {{ .certs_path }}
+  {{ if .ci_mount_targets -}}
+  CI_MOUNT_VOLUMES: {{ template "certificate_mount_volumes" . }}
+  {{- end }}
+  {{- end }}
+{{- end }}

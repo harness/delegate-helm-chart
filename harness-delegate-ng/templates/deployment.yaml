@@ -72,6 +72,34 @@ spec:
             - secretRef:
                 name: {{ template "harness-delegate-ng.fullname" . }}-proxy
                 optional: true
+            - configMapRef:
+                name: {{ template "harness-delegate-ng.fullname" . }}-shared-certificates
+                optional: true
+          {{- with .Values.custom_envs }}
+          envs:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+          {{- if $.Values.shared_certificates.ca_bundle }}
+            - name: certvol
+              mountPath: {{ .Values.shared_certificates.certs_path }}
+              subPath:  ca.bundle
+          {{- end }}
+          {{- with .Values.custom_mounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+      {{- if $.Values.shared_certificates.ca_bundle }}
+        - name: certvol
+          secret:
+            secretName: {{ template "harness-delegate-ng.fullname" . }}-addcerts
+            items:
+            - key: ca.bundle
+              path: ca.bundle
+      {{- end }}
+      {{- with .Values.custom_volumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
