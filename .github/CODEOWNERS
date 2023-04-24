@@ -1,0 +1,2 @@
+*.md @harness/del-team
+/harness-delegate-ng @harness/del-team
