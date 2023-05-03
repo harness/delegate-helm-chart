@@ -8,24 +8,16 @@ This chart creates a [Harness Delegate](https://docs.harness.io/article/h9tkwmkr
 
 
 ## Installing the Chart
-To add Harness helm repo with name `harness`:
+To add Harness helm repo with name `harness-delegate`:
 
 This chart is only compatible with helm version >= 3.2
 
 ```console
-$ helm repo add harness https://app.harness.io/storage/harness-download/harness-helm-charts/
+$ helm repo add harness-delegate https://app.harness.io/storage/harness-download/delegate-helm-chart
 ```
 
-The chart requires some account specific information. You can
-download the account specific `delegate-helm-values.yaml` by going to
-Harness > Setup > Installations page
-
-To install the chart with the namespace `my-namespace` and `delegate-helm-values.yaml`
-
-```console
-$ helm upgrade -i <delegate-name> --namespace my-namespace --create-namespace ./harness-delegate-ng -f harness-delegate-values.yaml
-```
-The command deploys Harness delegate on the Kubernetes cluster.
+The chart requires some account specific information. To install harness delegate using helm chart go to delegates page in harness UI
+and click on install delegate using helm chart. Follow on screen instructions to install harness-delegate using helm.
 
 
 ## Uninstalling the Chart
