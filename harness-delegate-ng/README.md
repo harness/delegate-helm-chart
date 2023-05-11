@@ -16,6 +16,8 @@ This chart is only compatible with helm version >= 3.2
 $ helm repo add harness-delegate https://app.harness.io/storage/harness-download/delegate-helm-chart
 ```
 
+Note: Older helm chart repo: https://app.harness.io/storage/harness-download/harness-helm-charts is DEPRECATED and receives no further update, please use the new repo mentioned above.
+
 The chart requires some account specific information. To install harness delegate using helm chart go to delegates page in harness UI
 and click on install delegate using helm chart. Follow on screen instructions to install harness-delegate using helm.
 
