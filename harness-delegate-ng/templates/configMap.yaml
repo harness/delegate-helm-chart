@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "harness-delegate-ng.labels" . | nindent 4 }}
 data:
-  ACCOUNT_ID: {{ required "A valid .Values.accountId entry required!" .Values.accountId }}
+  ACCOUNT_ID: {{ .Values.accountId }}
   MANAGER_HOST_AND_PORT : {{ .Values.managerEndpoint }}
   DEPLOY_MODE: "KUBERNETES"
   DELEGATE_NAME: {{ .Values.delegateName | quote }}
