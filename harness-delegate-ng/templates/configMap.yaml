@@ -8,7 +8,7 @@ metadata:
 data:
   ACCOUNT_ID: {{ .Values.accountId }}
   MANAGER_HOST_AND_PORT : {{ .Values.managerEndpoint }}
-  DEPLOY_MODE: "KUBERNETES"
+  DEPLOY_MODE: {{ .Values.deployMode }}
   DELEGATE_NAME: {{ .Values.delegateName | quote }}
   POLL_FOR_TASKS: {{ .Values.pollForTasks | quote }}
   NEXT_GEN: {{ .Values.nextGen | quote }}
