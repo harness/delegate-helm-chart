@@ -77,7 +77,7 @@ spec:
                 name: {{ template "harness-delegate-ng.fullname" . }}-shared-certificates
                 optional: true
           {{- with .Values.custom_envs }}
-          envs:
+          env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
