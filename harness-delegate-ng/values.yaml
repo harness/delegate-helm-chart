@@ -33,13 +33,6 @@ tolerations: []
 
 affinity: {}
 
-# Account Id to which the delegate will be connecting
-accountId: ""
-# Account Secret
-accountSecret: ""
-# Delegate Token
-delegateToken: ""
-
 delegateName: harness-delegate-ng
 
 deployMode: "KUBERNETES"
@@ -98,6 +91,14 @@ securityContext:
   runAsRoot: true
 
 nextGen: true
+
+# Below are the required fields, no default values are populated for these.
+# Please add values for delegate to work.
+
+# Account Id to which the delegate will be connecting
+accountId: ""
+# Delegate Token
+delegateToken: ""
 
 # Configure a Kubernetes build farm to use self-signed certificates
 # https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/configure-a-kubernetes-build-farm-to-use-self-signed-certificates/
