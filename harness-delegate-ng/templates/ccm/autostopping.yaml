@@ -406,9 +406,9 @@ spec:
         - name: HARNESS_API
           value: "https://app.harness.io/gateway/lw/api"
         - name: CONNECTOR_ID
-          value: ziraworkCostaccess
+          value: {{ .Values.ccm.autostopping.connector_id }}
         - name: REMOTE_ACCOUNT_ID
-          value: wlgELJ0TTre5aZhzpt8gVA
+          value: {{ .Values.ccm.autostopping.account_id }}
         ports:
         - containerPort: 18000
           name: envoy-snapshot
