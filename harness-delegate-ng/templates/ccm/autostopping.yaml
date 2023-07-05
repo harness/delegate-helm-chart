@@ -10,6 +10,7 @@ metadata:
 
 ---
 {{- end }}
+{{- if not .Values.ccm.visibility -}}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -80,6 +81,7 @@ subjects:
   - kind: ServiceAccount
     name: {{ include "harness-delegate-ng.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
+{{- end }}
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
