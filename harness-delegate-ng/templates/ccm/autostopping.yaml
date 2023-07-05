@@ -1,0 +1,496 @@
+{{- if .Values.ccm.autostopping.enabled -}}
+{{- if .Values.ccm.autostopping.api_key }}
+apiVersion: v1
+data:
+  token: {{ .Values.ccm.autostopping.api_key }}
+kind: Secret
+metadata:
+  name: harness-api-key
+  namespace: {{ include "harness-delegate-ng.autostoppingNamespace" . }}
+
+---
+{{- end }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ccm-visibility-clusterrole
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - nodes
+      - nodes/proxy
+      - events
+      - namespaces
+      - persistentvolumes
+      - persistentvolumeclaims
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - apps
+      - extensions
+    resources:
+      - statefulsets
+      - deployments
+      - daemonsets
+      - replicasets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - batch
+    resources:
+      - jobs
+      - cronjobs
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - metrics.k8s.io
+    resources:
+      - pods
+      - nodes
+    verbs:
+      - get
+      - list
+  - apiGroups:
+      - storage.k8s.io
+    resources:
+      - storageclasses
+    verbs:
+      - get
+      - list
+      - watch
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ccm-visibility-clusterrolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ccm-visibility-clusterrole
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "harness-delegate-ng.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ccm-autostopping-clusterrole
+rules:
+  - apiGroups:
+      - ccm.harness.io
+    resources:
+      - autostoppingrules
+      - autostoppingrules/status
+    verbs:
+      - get
+      - list
+      - watch
+      - delete
+      - create
+      - patch
+      - update
+      - deletecollection
+  - apiGroups:
+      - networking.k8s.io
+      - admissionregistration.k8s.io
+      - networking.istio.io
+    resources:
+      - ingresses
+      - validatingwebhookconfigurations
+      - virtualservices
+    verbs:
+      - get
+      - list
+      - watch
+      - delete
+      - create
+      - patch
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - patch
+      - update
+  - apiGroups:
+      - apps
+      - extensions
+    resources:
+      - deployments
+      - statefulsets
+      - replicasets
+      - deployments/scale
+      - deployments/status
+      - statefulsets/status
+      - statefulsets/scale
+    verbs:
+      - patch
+      - update
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ include "harness-delegate-ng.autostoppingNamespace" . }}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: autostopping-secret-reader-role
+  namespace: {{ include "harness-delegate-ng.autostoppingNamespace" . }}
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - patch
+      - delete
+      - update
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.4.1
+  creationTimestamp: null
+  name: autostoppingrules.ccm.harness.io
+spec:
+  group: ccm.harness.io
+  names:
+    kind: AutoStoppingRule
+    listKind: AutoStoppingRuleList
+    plural: autostoppingrules
+    singular: autostoppingrule
+    shortNames:
+    - asr
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        x-kubernetes-preserve-unknown-fields: true
+        description: AutoStoppingRule is the Schema for the autostoppingrules API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            x-kubernetes-preserve-unknown-fields: true
+            description: AutoStoppingRuleSpec defines the desired state of AutoStoppingRule
+            properties:
+              foo:
+                description: Foo is an example field of AutoStoppingRule. Edit autostoppingrule_types.go
+                  to remove/update
+                type: string
+            type: object
+          status:
+            x-kubernetes-preserve-unknown-fields: true
+            description: AutoStoppingRuleStatus defines the observed state of AutoStoppingRule
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: as-router-config
+  namespace: {{ include "harness-delegate-ng.autostoppingNamespace" . }}
+data:
+  envoy.yaml: >
+    node:
+      cluster: test-cluster
+      id: test-id
+
+    dynamic_resources:
+      lds_config:
+        resource_api_version: V3
+        api_config_source:
+          api_type: GRPC
+          transport_api_version: V3
+          grpc_services:
+            - envoy_grpc:
+                cluster_name: xds_cluster
+      cds_config:
+        resource_api_version: V3
+        api_config_source:
+          api_type: GRPC
+          transport_api_version: V3
+          grpc_services:
+            - envoy_grpc:
+                cluster_name: xds_cluster
+
+    static_resources:
+      clusters:
+      - name: xds_cluster
+        connect_timeout: 0.25s
+        type: STRICT_DNS
+        lb_policy: ROUND_ROBIN
+        typed_extension_protocol_options:
+          envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
+            "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
+            explicit_http_config:
+              http2_protocol_options:
+                connection_keepalive:
+                  interval: 30s
+                  timeout: 5s
+        load_assignment:
+          cluster_name: xds_cluster
+          endpoints:
+          - lb_endpoints:
+            - endpoint:
+                address:
+                  socket_address:
+                    address: autostopping-controller.{{ include "harness-delegate-ng.autostoppingNamespace" . }}.svc.cluster.local
+                    port_value: 18000
+      - name: harness_api_endpoint
+        connect_timeout: 0.25s
+        type: LOGICAL_DNS
+        dns_lookup_family: V4_ONLY
+        lb_policy: ROUND_ROBIN
+        load_assignment:
+          cluster_name: harness_api_endpoint
+          endpoints:
+          - lb_endpoints:
+            - endpoint:
+                address:
+                  socket_address:
+                    address: app.harness.io
+                    port_value: 443
+        transport_socket:
+          name: envoy.transport_sockets.tls
+          typed_config:
+            "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: autostopping-router
+  name: autostopping-router
+  namespace: {{ include "harness-delegate-ng.autostoppingNamespace" . }}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: autostopping-router
+  template:
+    metadata:
+      labels:
+        app: autostopping-router
+    spec:
+      containers:
+      - args:
+        - -c
+        - /etc/envoy.yaml
+        command:
+        - envoy
+        image: envoyproxy/envoy:v1.18-latest
+        imagePullPolicy: IfNotPresent
+        name: envoy
+        ports:
+        - containerPort: 10000
+          protocol: TCP
+          name: listener
+        - containerPort: 9901
+          protocol: TCP
+          name: admin
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/envoy.yaml
+          name: as-router-config
+          subPath: envoy.yaml
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: as-router-config
+        name: as-router-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: autostopping-router
+  namespace: {{ include "harness-delegate-ng.autostoppingNamespace" . }}
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 10000
+  selector:
+    app: autostopping-router
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: autostopping-controller
+  name: autostopping-controller
+  namespace: {{ include "harness-delegate-ng.autostoppingNamespace" . }}
+spec:
+  selector:
+    matchLabels:
+      app: autostopping-controller
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: autostopping-controller
+    spec:
+      containers:
+      - name: autostopping-controller
+        image: harness/autostopping-controller:1.0.16
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /tmp/k8s-webhook-server/serving-certs
+          name: serving-certs
+        env:
+        - name: HARNESS_API
+          value: "https://app.harness.io/gateway/lw/api"
+        - name: CONNECTOR_ID
+          value: ziraworkCostaccess
+        - name: REMOTE_ACCOUNT_ID
+          value: wlgELJ0TTre5aZhzpt8gVA
+        ports:
+        - containerPort: 18000
+          name: envoy-snapshot
+        - containerPort: 8093
+          protocol: TCP
+          name: progress
+        - containerPort: 9443
+          protocol: TCP
+          name: webhook
+      volumes:
+      - emptyDir: {}
+        name: serving-certs
+      serviceAccountName: harness-autostopping-sa
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: autostopping-controller
+  namespace: {{ include "harness-delegate-ng.autostoppingNamespace" . }}
+  labels:
+    app: autostopping-controller
+spec:
+  ports:
+  - port: 18000
+    protocol: TCP
+    name: envoy-snapshot
+  - port: 80
+    protocol: TCP
+    targetPort: 8093
+    name: progress
+  - port: 9443
+    protocol: TCP
+    targetPort: 9443
+    name: webhook
+  selector:
+    app: autostopping-controller
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: harness-autostopping-sa
+  namespace: {{ include "harness-delegate-ng.autostoppingNamespace" . }}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: harness-autostopping-sa
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ccm-autostopping-clusterrole
+subjects:
+  - kind: ServiceAccount
+    name: harness-autostopping-sa
+    namespace: {{ include "harness-delegate-ng.autostoppingNamespace" . }}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: harness-autostopping-secret-reader-sa
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: autostopping-secret-reader-role
+subjects:
+  - kind: ServiceAccount
+    name: harness-autostopping-sa
+    namespace: {{ include "harness-delegate-ng.autostoppingNamespace" . }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: harness-autostopping-enforcement
+  namespace: {{ include "harness-delegate-ng.autostoppingNamespace" . }}
+data:
+  is_active: 'false'
+  dry_run: enabled
+  excluded_namespaces: '[]'
+  notifications_enabled: 'false'
+  notifications_usergroups: '[]'
+{{- end }}

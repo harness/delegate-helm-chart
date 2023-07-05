@@ -101,3 +101,12 @@ Generate a list of default certificate path with certificate target location
   {{- end }}
   {{- join "," $mount_volumes -}}
 {{- end }}
+
+{{/*
+Create the name of the namespace to use for autostopping
+*/}}
+{{- define "harness-delegate-ng.autostoppingNamespace" -}}
+{{- if .Values.ccm.autostopping.namespace.create }}
+{{- default "harness-autostopping" .Values.ccm.autostopping.namespace.name }}
+{{- end }}
+{{- end }}

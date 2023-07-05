@@ -138,3 +138,20 @@ custom_volumes:
 # minimum number of seconds for which a newly created Pod should be ready without any of its containers crashing, for it to be considered available.
 # This is set for improving stability during upgrade. It will tell kubernetes to wait at least this amount of seconds before removing the old pod after the new one becomes ready.
 minReadySeconds: 120
+
+# Add additional resources for cloud cost management
+ccm:
+  # ClusterRoleBinding for visibility into cluster metrics
+  visibility: false
+  # CRD for autostopping rules
+  autostopping:
+    enabled: false
+    # FirstGen account admin api key
+    api_key: 
+    # Harness account id
+    account_id:
+    # CCM k8s connector id
+    connector_id: 
+  namespace:
+    create: true
+    name: harness-autostopping
