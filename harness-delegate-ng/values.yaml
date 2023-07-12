@@ -138,3 +138,7 @@ custom_volumes:
 # minimum number of seconds for which a newly created Pod should be ready without any of its containers crashing, for it to be considered available.
 # This is set for improving stability during upgrade. It will tell kubernetes to wait at least this amount of seconds before removing the old pod after the new one becomes ready.
 minReadySeconds: 120
+
+ccm:
+  enabled: false
+  role_name: ccm-visibility-clusterrole
