@@ -140,5 +140,5 @@ custom_volumes:
 minReadySeconds: 120
 
 ccm:
-  enabled: false
+  visibility: false
   role_name: ccm-visibility-clusterrole
