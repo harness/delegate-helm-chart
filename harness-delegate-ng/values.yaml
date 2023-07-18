@@ -37,7 +37,7 @@ delegateName: harness-delegate-ng
 
 deployMode: "KUBERNETES"
 
-delegateDockerImage: harness/delegate:23.06.79503
+delegateDockerImage: ""
 
 imagePullSecret: ""
 
