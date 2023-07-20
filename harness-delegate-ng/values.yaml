@@ -20,6 +20,7 @@ service:
   type: ClusterIP
   port: 8080
 
+# Edit this if you want to enable horizontal pod autoscaling
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -78,6 +79,7 @@ memory: 2048
 # Script to run before delegate installation
 initScript: ""
 
+# This is a constant, don't change this.
 delegateType: "HELM_DELEGATE"
 
 javaOpts: "-Xms64M"
@@ -87,6 +89,7 @@ upgrader:
   upgraderDockerImage: "harness/upgrader:latest"
   cronJobServiceAccountName: "upgrader-cronjob-sa"
 
+# Delegate is run by default with root access
 securityContext:
   runAsRoot: true
 
