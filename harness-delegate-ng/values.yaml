@@ -141,4 +141,3 @@ minReadySeconds: 120
 
 ccm:
   visibility: false
-  role_name: ccm-visibility-clusterrole
