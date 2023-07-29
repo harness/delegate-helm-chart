@@ -38,7 +38,14 @@ delegateName: harness-delegate-ng
 
 deployMode: "KUBERNETES"
 
-delegateDockerImage: harness/delegate:23.06.79707
+delegateDockerImage: ""
+
+
+# Annotations for delegate deployment, prometheus is added by default
+annotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "3460"
+  prometheus.io/path: "/api/metrics"
 
 imagePullSecret: ""
 

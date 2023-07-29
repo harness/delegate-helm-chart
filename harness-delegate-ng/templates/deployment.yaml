@@ -14,9 +14,7 @@ spec:
   template:
     metadata:
       annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "3460"
-        prometheus.io/path: "/api/metrics"
+        {{- toYaml .Values.annotations | nindent 8 }}
         checksum/secret: {{ include (print .Template.BasePath "/secret.yaml") . | sha256sum | trunc 63 }}
         checksum/configmap: {{ include (print .Template.BasePath "/configMap.yaml") . | sha256sum | trunc 63 }}
       labels:
