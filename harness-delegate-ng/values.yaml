@@ -109,6 +109,8 @@ nextGen: true
 accountId: ""
 # Delegate Token
 delegateToken: ""
+# Existing secret name with the delegate token variable
+existingDelegateToken: ""
 
 # Configure a Kubernetes build farm to use self-signed certificates
 # https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/configure-a-kubernetes-build-farm-to-use-self-signed-certificates/

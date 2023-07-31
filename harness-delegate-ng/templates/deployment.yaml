@@ -64,7 +64,7 @@ spec:
             - configMapRef:
                 name: {{ template "harness-delegate-ng.fullname" . }}
             - secretRef:
-                name: {{ template "harness-delegate-ng.fullname" . }}
+                name: {{ include "harness-delegate-ng.delegateToken" . }}
             - configMapRef:
                 name: {{ template "harness-delegate-ng.fullname" . }}-proxy
                 optional: true
