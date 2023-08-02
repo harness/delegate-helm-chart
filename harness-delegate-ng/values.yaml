@@ -139,5 +139,7 @@ custom_volumes:
 # This is set for improving stability during upgrade. It will tell kubernetes to wait at least this amount of seconds before removing the old pod after the new one becomes ready.
 minReadySeconds: 120
 
+# Enable the cluster role needed for CCM cost visibility
+# Not needed if k8sPermissionsType: "CLUSTER_ADMIN" is specified
 ccm:
   visibility: false
