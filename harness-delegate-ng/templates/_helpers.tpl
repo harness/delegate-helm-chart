@@ -106,7 +106,7 @@ Generate a list of default certificate path with certificate target location
 Define the delegate token name
 */}}
 {{- define "harness-delegate-ng.delegateToken" -}}
-{{- if .Values.delegateToken }}
+{{- if not .Values.existingDelegateToken }}
 {{- include "harness-delegate-ng.fullname" . }}
 {{- else }}
 {{- .Values.existingDelegateToken | trunc 63 | toString }}
@@ -114,12 +114,12 @@ Define the delegate token name
 {{- end }}
 
 {{/*
-Define the upgrader delegate token name
+Define the upgrader token name
 */}}
 {{- define "harness-delegate-ng.upgraderDelegateToken" -}}
-{{- if .Values.delegateToken }}
+{{- if not .Values.upgrader.existingUpgraderToken }}
 {{- include "harness-delegate-ng.fullname" . }}-upgrader-token
 {{- else }}
-{{- .Values.existingDelegateToken | trunc 63 | toString }}
+{{- .Values.upgrader.existingUpgraderToken | trunc 63 | toString }}
 {{- end }}
 {{- end }}

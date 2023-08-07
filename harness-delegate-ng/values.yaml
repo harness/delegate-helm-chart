@@ -95,6 +95,8 @@ upgrader:
   enabled: true
   upgraderDockerImage: "harness/upgrader:latest"
   cronJobServiceAccountName: "upgrader-cronjob-sa"
+  # Existing secret name with UPGRADER_TOKEN key
+  existingUpgraderToken: ""
 
 # Delegate is run by default with root access
 securityContext:
@@ -109,7 +111,7 @@ nextGen: true
 accountId: ""
 # Delegate Token
 delegateToken: ""
-# Existing secret name with the delegate token variable
+# Existing secret name with DELEGATE_TOKEN key
 existingDelegateToken: ""
 
 # Configure a Kubernetes build farm to use self-signed certificates
