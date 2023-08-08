@@ -95,7 +95,12 @@ upgrader:
   enabled: true
   upgraderDockerImage: "harness/upgrader:latest"
   cronJobServiceAccountName: "upgrader-cronjob-sa"
-  # Existing secret name with UPGRADER_TOKEN key
+  # Use existing Secret which stores UPGRADER_TOKEN key instead of creating a new one. The value should be set with the `UPGRADER_TOKEN` key inside the secret.
+  ## The use of external secrets allows you to manage credentials from external tools like Vault, 1Password, SealedSecrets, among other.
+  ## If set, this parameter takes precedence over "delegateToken"
+  ## Recommendation:
+  ## - Use different Secrets names for `existingUpgraderToken` and `existingDelegateToken`.
+  ## - Do not use same Secrets names in multiple helm deployments.
   existingUpgraderToken: ""
 
 # Delegate is run by default with root access
@@ -111,7 +116,12 @@ nextGen: true
 accountId: ""
 # Delegate Token
 delegateToken: ""
-# Existing secret name with DELEGATE_TOKEN key
+# Use existing Secret which stores DELEGATE_TOKEN key instead of creating a new one. The value should be set with the `DELEGATE_TOKEN` key inside the secret.
+## The use of external secrets allows you to manage credentials from external tools like Vault, 1Password, SealedSecrets, among other.
+## If set, this parameter takes precedence over "delegateToken".
+## Recommendations:
+## - Use different Secrets names for `existingUpgraderToken` and `existingDelegateToken`.
+## - Do not use same Secrets names in multiple helm deployments.
 existingDelegateToken: ""
 
 # Configure a Kubernetes build farm to use self-signed certificates
