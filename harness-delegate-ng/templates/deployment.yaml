@@ -30,8 +30,8 @@ spec:
       containers:
         - name: delegate
           image: {{ .Values.delegateDockerImage }}
-          securityContext:
           {{- if .Values.securityContext.runAsRoot }}
+          securityContext:
             {{- toYaml .Values.delegateSecurityContext | nindent 12 }}
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
