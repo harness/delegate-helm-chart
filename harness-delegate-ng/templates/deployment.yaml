@@ -32,8 +32,7 @@ spec:
           image: {{ .Values.delegateDockerImage }}
           {{- if .Values.securityContext.runAsRoot }}
           securityContext:
-            allowPrivilegeEscalation: false
-            runAsUser: 0
+            {{- toYaml .Values.delegateSecurityContext | nindent 12 }}
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
