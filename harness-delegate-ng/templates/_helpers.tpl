@@ -101,3 +101,25 @@ Generate a list of default certificate path with certificate target location
   {{- end }}
   {{- join "," $mount_volumes -}}
 {{- end }}
+
+{{/*
+Define the delegate token name
+*/}}
+{{- define "harness-delegate-ng.delegateToken" -}}
+{{- if not .Values.existingDelegateToken }}
+{{- include "harness-delegate-ng.fullname" . }}
+{{- else }}
+{{- .Values.existingDelegateToken | trunc 63 | toString }}
+{{- end }}
+{{- end }}
+
+{{/*
+Define the upgrader token name
+*/}}
+{{- define "harness-delegate-ng.upgraderDelegateToken" -}}
+{{- if not .Values.upgrader.existingUpgraderToken }}
+{{- include "harness-delegate-ng.fullname" . }}-upgrader-token
+{{- else }}
+{{- .Values.upgrader.existingUpgraderToken | trunc 63 | toString }}
+{{- end }}
+{{- end }}
