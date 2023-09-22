@@ -11,6 +11,8 @@ spec:
   selector:
     matchLabels:
       {{- include "harness-delegate-ng.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: {{ .Values.deploymentStrategy | default "RollingUpdate" }}
   template:
     metadata:
       annotations:
