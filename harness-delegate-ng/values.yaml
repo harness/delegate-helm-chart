@@ -17,7 +17,7 @@ serviceAccount:
   name: ""
 
 service:
-  type: ClusterIP
+ # type: ClusterIP
   port: 8080
 
 # Edit this if you want to enable horizontal pod autoscaling
@@ -38,7 +38,7 @@ delegateName: harness-delegate-ng
 
 deployMode: "KUBERNETES"
 
-delegateDockerImage: harness/delegate:23.08.80104
+delegateDockerImage: ""
 
 
 # Annotations for delegate deployment, prometheus is added by default
