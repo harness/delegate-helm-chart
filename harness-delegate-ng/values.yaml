@@ -175,6 +175,10 @@ minReadySeconds: 120
 ccm:
   visibility: false
 
+# Use this field to add additional labels
+additionalLabels: {}
+#  nologging: "true"
+
 dnsConfig: {}
 #  nameservers:
 #    - 1.2.3.4

@@ -32,6 +32,9 @@ Common labels
 {{- define "harness-delegate-ng.labels" -}}
 helm.sh/chart: {{ include "harness-delegate-ng.chart" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- if .Values.additionalLabels }}
+{{ toYaml .Values.additionalLabels }}
+{{- end }}
 {{ include "harness-delegate-ng.selectorLabels" . }}
 {{- end }}
 
