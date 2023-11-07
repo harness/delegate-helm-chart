@@ -174,3 +174,16 @@ minReadySeconds: 120
 # Not needed if k8sPermissionsType: "CLUSTER_ADMIN" is specified
 ccm:
   visibility: false
+
+dnsConfig: {}
+#  nameservers:
+#    - 1.2.3.4
+#  searches:
+#    - ns1.svc.cluster-domain.example
+#    - my.dns.search.suffix
+#  options:
+#    - name: ndots
+#      value: "2"
+#    - name: edns0
+
+dnsPolicy: ""
