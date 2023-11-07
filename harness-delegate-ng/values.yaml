@@ -174,3 +174,8 @@ minReadySeconds: 120
 # Not needed if k8sPermissionsType: "CLUSTER_ADMIN" is specified
 ccm:
   visibility: false
+
+# Use this field to add additional labels
+additionalLabels: {}
+#  nologging: "true"
+
