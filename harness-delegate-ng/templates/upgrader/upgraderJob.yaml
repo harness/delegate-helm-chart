@@ -24,9 +24,20 @@ spec:
                 - secretRef:
                     name: {{ include "harness-delegate-ng.upgraderDelegateToken" . }}
               volumeMounts:
+              {{- if $.Values.upgraderCustomCa.secretName }}
+                - name: custom-certs
+                  mountPath: {{ .Values.upgraderCustomCa.path }}
+                  readOnly: true
+              {{- end }}
                 - name: config-volume
                   mountPath: /etc/config
           volumes:
+          {{- if $.Values.upgraderCustomCa.secretName }}
+            - name: custom-certs
+              secret:
+                secretName: {{ .Values.upgraderCustomCa.secretName }}
+                defaultMode: 400
+          {{- end }}
             - name: config-volume
               configMap:
                 name: {{ .Values.delegateName }}-upgrader-config

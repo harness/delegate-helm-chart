@@ -83,6 +83,11 @@ spec:
               mountPath: {{ .Values.shared_certificates.certs_path }}
               subPath:  ca.bundle
           {{- end }}
+          {{- if $.Values.delegateCustomCa.secretName }}
+            - name: custom-certs
+              mountPath: {{ .Values.delegateCustomCa.path }}
+              readOnly: true
+          {{- end }}
           {{- with .Values.custom_mounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -94,6 +99,12 @@ spec:
             items:
             - key: ca.bundle
               path: ca.bundle
+      {{- end }}
+      {{- if $.Values.delegateCustomCa.secretName }}
+        - name: custom-certs
+          secret:
+            secretName: {{ .Values.delegateCustomCa.secretName }}
+            defaultMode: 400
       {{- end }}
       {{- with .Values.custom_volumes }}
         {{- toYaml . | nindent 8 }}
