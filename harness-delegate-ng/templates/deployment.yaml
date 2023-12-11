@@ -27,6 +27,8 @@ spec:
       imagePullSecrets:
       - name: {{ .Values.imagePullSecret }}
       {{- end }}
+      securityContext:
+        fsGroup: 1001
       containers:
         - name: delegate
           image: {{ .Values.delegateDockerImage }}

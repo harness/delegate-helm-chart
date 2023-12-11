@@ -113,7 +113,6 @@ securityContext:
 delegateSecurityContext:
   allowPrivilegeEscalation: false
   runAsUser: 0
-  fsGroup: 1001
 
 
 nextGen: true
