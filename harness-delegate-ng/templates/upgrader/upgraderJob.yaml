@@ -16,6 +16,8 @@ spec:
         spec:
           serviceAccountName: {{ template "harness-delegate-ng.fullname" . }}-{{ .Values.upgrader.cronJobServiceAccountName }}
           restartPolicy: Never
+          securityContext:
+            fsGroup: 1001
           containers:
             - image: {{ .Values.upgrader.upgraderDockerImage }}
               name: upgrader
@@ -26,7 +28,7 @@ spec:
               volumeMounts:
               {{- if $.Values.upgraderCustomCa.secretName }}
                 - name: custom-certs
-                  mountPath: {{ .Values.upgraderCustomCa.path }}
+                  mountPath: /ca-bundle
                   readOnly: true
               {{- end }}
                 - name: config-volume

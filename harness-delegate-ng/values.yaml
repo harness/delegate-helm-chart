@@ -113,6 +113,8 @@ securityContext:
 delegateSecurityContext:
   allowPrivilegeEscalation: false
   runAsUser: 0
+  fsGroup: 1001
+
 
 nextGen: true
 
@@ -195,9 +197,7 @@ dnsConfig: {}
 dnsPolicy: ""
 
 upgraderCustomCa:
-  path: /ca-bundle
   secretName: upgraderCert
 
 delegateCustomCa:
-  path: /opt/harness-delegate/ca-bundle/
   secretName: delegateCert

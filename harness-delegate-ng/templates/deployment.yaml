@@ -85,7 +85,7 @@ spec:
           {{- end }}
           {{- if $.Values.delegateCustomCa.secretName }}
             - name: custom-certs
-              mountPath: {{ .Values.delegateCustomCa.path }}
+              mountPath: /opt/harness-delegate/ca-bundle/
               readOnly: true
           {{- end }}
           {{- with .Values.custom_mounts }}
