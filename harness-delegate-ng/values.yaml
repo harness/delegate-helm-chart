@@ -147,13 +147,13 @@ shared_certificates:
   # ca_bundle should be the text of the CA Bundle to include in a secret
   #
   # Note: when defined, the secret will be mounted to the certs_path location on the delegate
-  ca_bundle:
-     -----BEGIN CERTIFICATE-----
-     XXXXXXXXXXXXXXXXXXXXXXXXXXX
-     -----END CERTIFICATE-------
-     -----BEGIN CERTIFICATE-----
-     XXXXXXXXXXXXXXXXXXXXXXXXXXX
-     -----END CERTIFICATE-------
+  ca_bundle: # |
+  #   -----BEGIN CERTIFICATE-----
+  #   XXXXXXXXXXXXXXXXXXXXXXXXXXX
+  #   -----END CERTIFICATE-------
+  #   -----BEGIN CERTIFICATE-----
+  #   XXXXXXXXXXXXXXXXXXXXXXXXXXX
+  #   -----END CERTIFICATE-------
 
   # CI Mount targets are the locations that the secrets should be mounted in the CI Images.  This will share any CA chain defined in the certs_path key to any CI image
   # configured in the pod.
@@ -161,9 +161,6 @@ shared_certificates:
     # - /etc/ssl/certs/ca-bundle.crt
     # - /etc/ssl/certs/ca-certificates.crt
     # - /kaniko/ssl/certs/additional-ca-cert-bundle.crt
-
-custom_certs:
-  secretName:
 
 custom_envs:
 
