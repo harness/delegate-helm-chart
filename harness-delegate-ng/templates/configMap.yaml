@@ -23,5 +23,8 @@ data:
   {{- if not .Values.nextGen }}
   DELEGATE_GROUP_NAME: {{ template "harness-delegate-ng.fullname" . }}
   {{- end }}
+  {{- if .Values.destinationCaPath }}
+  DESTINATION_CA_PATH: {{ .Values.destinationCaPath }}
+  {{- end }}
 
 

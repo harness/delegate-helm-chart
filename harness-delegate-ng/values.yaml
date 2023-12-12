@@ -138,8 +138,8 @@ existingDelegateToken: ""
 # Make sure that the destination path is not same as the default CA certificate path of the corresponding container image.
 #
 # If you want to override the default certificate file, make sure the Kubernetes secret or config map (from step one) includes all certificates required by the pipelines that will use this build infrastructure.
-
-# shared_certificates is deprecated please use delegateCustomCa to use custom certs in delegate
+# This is LEGACY way to adding cert, we recommend to use destinationCaPath, please follow the document:
+# https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/configure-a-kubernetes-build-farm-to-use-self-signed-certificates/
 shared_certificates:
   # Location in the delegate to which the ca_bundle will be mounted or a location in the custom delegate image to which the
   # CA chain has already been placed as part of creating the custom delegate image
@@ -196,7 +196,11 @@ dnsConfig: {}
 dnsPolicy: ""
 
 upgraderCustomCa:
-  secretName: upgraderCert
+  secretName:
 
 delegateCustomCa:
-  secretName: delegateCert
+  secretName:
+
+# This is recommended way of using custom certs with CI.
+# Please refer: https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/k8s-build-infrastructure/configure-a-kubernetes-build-farm-to-use-self-signed-certificates/
+destinationCaPath:
