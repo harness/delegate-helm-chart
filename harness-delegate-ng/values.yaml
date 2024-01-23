@@ -203,4 +203,4 @@ delegateCustomCa:
 
 # This is recommended way of using custom certs with CI.
 # Please refer: https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/k8s-build-infrastructure/configure-a-kubernetes-build-farm-to-use-self-signed-certificates/
-destinationCaPath:
+destinationCaPath: ""
