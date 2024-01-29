@@ -60,11 +60,13 @@ startupProbe:
   initialDelaySeconds: 10
   periodSeconds: 10
   failureThreshold: 40
+  timeoutSeconds: 1
 
 livenessProbe:
   initialDelaySeconds: 30
   periodSeconds: 20
   failureThreshold: 3
+  timeoutSeconds: 1
 
 # Add delegate description and tags
 description: ""
