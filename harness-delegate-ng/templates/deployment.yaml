@@ -53,6 +53,7 @@ spec:
             initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
             periodSeconds:  {{ .Values.startupProbe.periodSeconds }}
             failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+            timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
           livenessProbe:
             httpGet:
               path: /api/health
@@ -61,6 +62,7 @@ spec:
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
           envFrom:
             - configMapRef:
                 name: {{ template "harness-delegate-ng.fullname" . }}
