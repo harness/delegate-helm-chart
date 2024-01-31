@@ -79,6 +79,10 @@ k8sPermissionsType: "CLUSTER_ADMIN"
 # Number of pod replica running delegate image
 replicas: 1
 
+# The deployment strategy. Can be "RollingUpdate" or "Recreate". Can be usefull if a rolling update is not
+# possible due to custom volumes or mounts that can only be attached to a single pod.
+deploymentStrategy: "RollingUpdate"
+
 # Resource limits of container running delegate image in kubernetes
 cpu: 1
 memory: 2048
