@@ -167,11 +167,21 @@ shared_certificates:
     # - /etc/ssl/certs/ca-certificates.crt
     # - /kaniko/ssl/certs/additional-ca-cert-bundle.crt
 
+# additional environment variables for the delegate pod
 custom_envs:
+  # - name: DELEGATE_TASK_CAPACITY
+  #   value: "10"
 
+# mounts for the delegate pod
 custom_mounts:
+  # - name: certs
+  #   mountPath: /shared/customer-artifacts/certificates/
 
+# volumes to add to the delegate container
 custom_volumes:
+  # - name: certs
+  #   persistentVolumeClaim:
+  #     claimName: harness-delegate-ng-certs
 
 # minimum number of seconds for which a newly created Pod should be ready without any of its containers crashing, for it to be considered available.
 # This is set for improving stability during upgrade. It will tell kubernetes to wait at least this amount of seconds before removing the old pod after the new one becomes ready.
