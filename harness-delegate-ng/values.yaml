@@ -17,7 +17,7 @@ serviceAccount:
   name: ""
 
 service:
-  type: ClusterIP
+ # type: ClusterIP
   port: 8080
 
 # Edit this if you want to enable horizontal pod autoscaling
@@ -40,7 +40,7 @@ delegateName: harness-delegate-ng
 
 deployMode: "KUBERNETES"
 
-delegateDockerImage: harness/delegate:23.08.80104
+delegateDockerImage: harness/delegate:24.01.82108
 
 
 # Annotations for delegate deployment, prometheus is added by default
@@ -62,11 +62,13 @@ startupProbe:
   initialDelaySeconds: 10
   periodSeconds: 10
   failureThreshold: 40
+  timeoutSeconds: 1
 
 livenessProbe:
   initialDelaySeconds: 30
   periodSeconds: 20
   failureThreshold: 3
+  timeoutSeconds: 1
 
 # Add delegate description and tags
 description: ""
@@ -116,6 +118,7 @@ delegateSecurityContext:
   allowPrivilegeEscalation: false
   runAsUser: 0
 
+
 nextGen: true
 
 # Below are the required fields, no default values are populated for these.
@@ -139,6 +142,8 @@ existingDelegateToken: ""
 # Make sure that the destination path is not same as the default CA certificate path of the corresponding container image.
 #
 # If you want to override the default certificate file, make sure the Kubernetes secret or config map (from step one) includes all certificates required by the pipelines that will use this build infrastructure.
+# This is LEGACY way to adding cert, we recommend to use destinationCaPath, please follow the document:
+# https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/configure-a-kubernetes-build-farm-to-use-self-signed-certificates/
 shared_certificates:
   # Location in the delegate to which the ca_bundle will be mounted or a location in the custom delegate image to which the
   # CA chain has already been placed as part of creating the custom delegate image
@@ -176,3 +181,30 @@ minReadySeconds: 120
 # Not needed if k8sPermissionsType: "CLUSTER_ADMIN" is specified
 ccm:
   visibility: false
+
+# Use this field to add additional labels
+additionalLabels: {}
+#  nologging: "true"
+
+dnsConfig: {}
+#  nameservers:
+#    - 1.2.3.4
+#  searches:
+#    - ns1.svc.cluster-domain.example
+#    - my.dns.search.suffix
+#  options:
+#    - name: ndots
+#      value: "2"
+#    - name: edns0
+
+dnsPolicy: ""
+
+upgraderCustomCa:
+  secretName:
+
+delegateCustomCa:
+  secretName:
+
+# This is recommended way of using custom certs with CI.
+# Please refer: https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/k8s-build-infrastructure/configure-a-kubernetes-build-farm-to-use-self-signed-certificates/
+destinationCaPath:

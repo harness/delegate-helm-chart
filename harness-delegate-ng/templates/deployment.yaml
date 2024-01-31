@@ -27,6 +27,8 @@ spec:
       imagePullSecrets:
       - name: {{ .Values.imagePullSecret }}
       {{- end }}
+      securityContext:
+        fsGroup: 1001
       containers:
         - name: delegate
           image: {{ .Values.delegateDockerImage }}
@@ -51,6 +53,7 @@ spec:
             initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
             periodSeconds:  {{ .Values.startupProbe.periodSeconds }}
             failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+            timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
           livenessProbe:
             httpGet:
               path: /api/health
@@ -59,6 +62,7 @@ spec:
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
           envFrom:
             - configMapRef:
                 name: {{ template "harness-delegate-ng.fullname" . }}
@@ -83,6 +87,11 @@ spec:
               mountPath: {{ .Values.shared_certificates.certs_path }}
               subPath:  ca.bundle
           {{- end }}
+          {{- if $.Values.delegateCustomCa.secretName }}
+            - name: custom-certs
+              mountPath: /opt/harness-delegate/ca-bundle/
+              readOnly: true
+          {{- end }}
           {{- with .Values.custom_mounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -94,6 +103,12 @@ spec:
             items:
             - key: ca.bundle
               path: ca.bundle
+      {{- end }}
+      {{- if $.Values.delegateCustomCa.secretName }}
+        - name: custom-certs
+          secret:
+            secretName: {{ .Values.delegateCustomCa.secretName }}
+            defaultMode: 400
       {{- end }}
       {{- with .Values.custom_volumes }}
         {{- toYaml . | nindent 8 }}
@@ -112,4 +127,11 @@ spec:
       {{- end }}
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
+      {{- if .Values.dnsPolicy }}
+      dnsPolicy: {{ .Values.dnsPolicy }}
+      {{- end }}
+      {{- with .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml . | nindent 8 }}
       {{- end }}
