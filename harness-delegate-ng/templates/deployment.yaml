@@ -39,6 +39,8 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.port }}
+            - name: api
+              containerPort: 3460
           resources:
             limits:
               memory: {{ include "harness-delegate-ng.assignedMemory" .}}
