@@ -19,9 +19,9 @@ spec:
           securityContext:
             fsGroup: 1001
           containers:
-            - image: {{ .Values.upgrader.upgraderDockerImage }}
+            - image: {{ .Values.upgrader.image.repository }}:{{ .Values.upgrader.image.tag }}
               name: upgrader
-              imagePullPolicy: Always
+              imagePullPolicy: {{ .Values.upgrader.image.pullPolicy }}
               envFrom:
                 - secretRef:
                     name: {{ include "harness-delegate-ng.upgraderDelegateToken" . }}

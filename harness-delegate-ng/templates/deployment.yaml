@@ -33,7 +33,7 @@ spec:
         fsGroup: 1001
       containers:
         - name: delegate
-          image: {{ .Values.delegateDockerImage }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           {{- if .Values.securityContext.runAsRoot }}
           securityContext:
             {{- toYaml .Values.delegateSecurityContext | nindent 12 }}
@@ -45,9 +45,12 @@ spec:
               containerPort: 3460
           resources:
             limits:
+              {{- if .Values.cpuLimit }}
+              cpu: {{ .Values.cpuLimit }}
+              {{- end }}
               memory: {{ include "harness-delegate-ng.assignedMemory" .}}
             requests:
-              cpu: {{ .Values.cpu }}
+              cpu: {{ .Values.cpuRequest }}
               memory: {{ include "harness-delegate-ng.assignedMemory" .}}
           startupProbe:
             httpGet:
