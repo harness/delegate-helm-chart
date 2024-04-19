@@ -33,7 +33,13 @@ spec:
         fsGroup: 1001
       containers:
         - name: delegate
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          {{- if and .Values.image.registry .Values.image.repository}}
+          image: "{{ $.Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          {{- elseif .Values.image.repository }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          {{- else }}
+          image: {{ .Values.delegateDockerImage }}
+          {{- end }}
           {{- if .Values.securityContext.runAsRoot }}
           securityContext:
             {{- toYaml .Values.delegateSecurityContext | nindent 12 }}
@@ -44,14 +50,15 @@ spec:
             - name: api
               containerPort: 3460
           resources:
+            {{- if .Values.resources. }}
+            {{- toYaml .Values.resources | nindent 12 }}
+            {{- else }}
             limits:
-              {{- if .Values.cpuLimit }}
-              cpu: {{ .Values.cpuLimit }}
-              {{- end }}
               memory: {{ include "harness-delegate-ng.assignedMemory" .}}
             requests:
-              cpu: {{ .Values.cpuRequest }}
+              cpu: {{ .Values.cpu }}
               memory: {{ include "harness-delegate-ng.assignedMemory" .}}
+            {{- end }}
           startupProbe:
             httpGet:
               path: /api/health

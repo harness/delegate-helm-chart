@@ -19,8 +19,14 @@ spec:
           securityContext:
             fsGroup: 1001
           containers:
-            - image: {{ .Values.upgrader.image.repository }}:{{ .Values.upgrader.image.tag }}
-              name: upgrader
+            - name: upgrader
+              {{- if and .Values.upgrader.image.registry .Values.upgrader.image.repository}}
+              image: "{{ $.Values.upgrader.image.registry }}/{{ .Values.upgrader.image.repository }}:{{ .Values.upgrader.image.tag | default latest }}"
+              {{- elseif .Values.upgrader.image.repository }}
+              image: "{{ .Values.upgrader.image.repository }}:{{ .Values.upgrader.image.tag | default latest}}"
+              {{- else }}
+              image: {{ .Values.upgrader.upgraderDockerImage }}
+              {{- end }}
               imagePullPolicy: {{ .Values.upgrader.image.pullPolicy }}
               envFrom:
                 - secretRef:
