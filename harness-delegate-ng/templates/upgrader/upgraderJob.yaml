@@ -19,9 +19,15 @@ spec:
           securityContext:
             fsGroup: 1001
           containers:
-            - image: {{ .Values.upgrader.upgraderDockerImage }}
-              name: upgrader
-              imagePullPolicy: Always
+            - name: upgrader
+              {{- if and .Values.upgrader.image.registry .Values.upgrader.image.repository}}
+              image: {{ $.Values.upgrader.image.registry }}/{{ .Values.upgrader.image.repository }}:{{ .Values.upgrader.image.tag | default "latest" }}
+              {{- else if .Values.upgrader.image.repository }}
+              image: {{ .Values.upgrader.image.repository }}:{{ .Values.upgrader.image.tag | default "latest"}}
+              {{- else }}
+              image: {{ .Values.upgrader.upgraderDockerImage }}
+              {{- end }}
+              imagePullPolicy: {{ .Values.upgrader.image.pullPolicy }}
               envFrom:
                 - secretRef:
                     name: {{ include "harness-delegate-ng.upgraderDelegateToken" . }}

@@ -4,6 +4,10 @@
 
 image:
   pullPolicy: Always
+  # Uncomment below lines to use a custom registry + repository, a different repository or a different tag, this will override the delegateDockerImage
+  # registry: null
+  # repository: null
+  # tag: null
 
 fullnameOverride: ""
 
@@ -17,7 +21,7 @@ serviceAccount:
   name: ""
 
 service:
- # type: ClusterIP
+  # type: ClusterIP
   port: 8080
 
 # Edit this if you want to enable horizontal pod autoscaling
@@ -41,7 +45,6 @@ delegateName: harness-delegate-ng
 deployMode: "KUBERNETES"
 
 delegateDockerImage: harness/delegate:24.01.82108
-
 
 # Annotations for delegate deployment, prometheus is added by default
 annotations:
@@ -88,6 +91,14 @@ replicas: 1
 deploymentStrategy: "RollingUpdate"
 
 # Resource limits of container running delegate image in kubernetes
+# If you want to set custom resource limits, uncomment the below line and set the values for cpu and memory request/limit
+# resources:
+#   limits:
+#     cpu: 1
+#     memory: 2048Mi
+#   requests:
+#     cpu: 1
+#     memory: 2048Mi
 cpu: 1
 memory: 2048
 
@@ -102,6 +113,13 @@ javaOpts: "-Xms64M"
 upgrader:
   enabled: true
   upgraderDockerImage: "harness/upgrader:latest"
+  image:
+    pullPolicy: Always
+    # Uncomment below lines to use a custom registry + repository, a different repository or a different tag, this will override the upgraderDockerImage
+    # registry: null
+    # repository: null
+    # tag: null
+
   cronJobServiceAccountName: "upgrader-cronjob-sa"
   # Use existing Secret which stores UPGRADER_TOKEN key instead of creating a new one. The value should be set with the `UPGRADER_TOKEN` key inside the secret.
   ## The use of external secrets allows you to manage credentials from external tools like Vault, 1Password, SealedSecrets, among other.
@@ -121,7 +139,6 @@ securityContext:
 delegateSecurityContext:
   allowPrivilegeEscalation: false
   runAsUser: 0
-
 
 nextGen: true
 
