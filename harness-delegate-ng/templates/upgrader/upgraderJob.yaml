@@ -21,9 +21,9 @@ spec:
           containers:
             - name: upgrader
               {{- if and .Values.upgrader.image.registry .Values.upgrader.image.repository}}
-              image: "{{ $.Values.upgrader.image.registry }}/{{ .Values.upgrader.image.repository }}:{{ .Values.upgrader.image.tag | default latest }}"
-              {{- elseif .Values.upgrader.image.repository }}
-              image: "{{ .Values.upgrader.image.repository }}:{{ .Values.upgrader.image.tag | default latest}}"
+              image: {{ $.Values.upgrader.image.registry }}/{{ .Values.upgrader.image.repository }}:{{ .Values.upgrader.image.tag | default "latest" }}
+              {{- else if .Values.upgrader.image.repository }}
+              image: {{ .Values.upgrader.image.repository }}:{{ .Values.upgrader.image.tag | default "latest"}}
               {{- else }}
               image: {{ .Values.upgrader.upgraderDockerImage }}
               {{- end }}
