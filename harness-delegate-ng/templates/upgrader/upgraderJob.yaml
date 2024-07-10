@@ -7,7 +7,7 @@ metadata:
   name: {{ template "harness-delegate-ng.fullname" . }}-upgrader-job
   namespace: {{ .Release.Namespace }}
 spec:
-  schedule: "0 */1 * * *"
+  schedule: "* */1 * * *"
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 20
   jobTemplate:
@@ -28,6 +28,7 @@ spec:
               image: {{ .Values.upgrader.upgraderDockerImage }}
               {{- end }}
               imagePullPolicy: {{ .Values.upgrader.image.pullPolicy }}
+              {{- if .Values.upgrader.securityContext }}
               securityContext:
                 {{- toYaml .Values.upgrader.securityContext | nindent 16 }}
               {{- end }}
