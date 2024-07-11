@@ -28,6 +28,10 @@ spec:
               image: {{ .Values.upgrader.upgraderDockerImage }}
               {{- end }}
               imagePullPolicy: {{ .Values.upgrader.image.pullPolicy }}
+              {{- if .Values.upgrader.securityContext }}
+              securityContext:
+                {{- toYaml .Values.upgrader.securityContext | nindent 16 }}
+              {{- end }}
               envFrom:
                 - secretRef:
                     name: {{ include "harness-delegate-ng.upgraderDelegateToken" . }}

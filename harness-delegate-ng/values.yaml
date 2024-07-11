@@ -129,6 +129,9 @@ upgrader:
   ## - Do not use Secrets managed by other helm delpoyments.
   existingUpgraderToken: ""
 
+  # Set security context for upgrader
+  securityContext:
+
 # This field is DEPRECATED, DON'T OVERRIDE/USE THIS!!
 # To set root/non-root access and other security context use delegateSecurityContext field below.
 # Not removing this field to maintain backward compatibility.
