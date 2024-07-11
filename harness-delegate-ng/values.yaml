@@ -77,7 +77,7 @@ livenessProbe:
 description: ""
 tags: ""
 
-# Permissions for installed delegate, could be CLUSTER_ADMIN, CLUSTER_VIEWER or NAMESPACE_ADMIN
+# Permissions for installed delegate, could be CLUSTER_ADMIN, CLUSTER_VIEWER, NAMESPACE_ADMIN or CI_USER
 # For using custom role: Create role in kubernetes cluster and refer role in k8sPermissionsType field.
 # for example if your custom role name is custom-role, then you need to add
 #k8sPermissionsType: "custom-role"
