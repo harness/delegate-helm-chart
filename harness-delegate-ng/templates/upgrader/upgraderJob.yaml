@@ -52,5 +52,5 @@ spec:
           {{- end }}
             - name: config-volume
               configMap:
-                name: {{ .Values.delegateName }}-upgrader-config
+                name: {{ template "harness-delegate-ng.fullname" . }}-upgrader-config
 {{- end }}
