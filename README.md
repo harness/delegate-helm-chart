@@ -32,6 +32,3 @@ helm upgrade -i helm-delegate --namespace harness-delegate-ng --create-namespace
 ## Raising Pull request
 1. If you are adding a new variable, please provide a description of variable in values.yaml.
 2. Once changes are tested, raise a pull request **without changing chart.yaml and index.yaml**
-
-
-
