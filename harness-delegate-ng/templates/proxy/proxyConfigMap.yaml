@@ -14,5 +14,3 @@ data:
   NO_PROXY: {{ .Values.noProxy | quote }}
   {{- end }}
 {{- end }}
-
-

@@ -10,7 +10,7 @@ data:
   config.yaml: |
     mode: Delegate
     dryRun: false
-    workloadName: {{ .Values.delegateName }}
+    workloadName: {{ template "harness-delegate-ng.fullname" . }}
     namespace: {{ .Release.Namespace }}
     containerName: delegate
     delegateConfig:

@@ -26,5 +26,3 @@ data:
   {{- if .Values.destinationCaPath }}
   DESTINATION_CA_PATH: {{ .Values.destinationCaPath }}
   {{- end }}
-
-
