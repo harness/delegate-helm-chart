@@ -44,7 +44,7 @@ delegateName: harness-delegate-ng
 
 deployMode: "KUBERNETES"
 
-delegateDockerImage: harness/delegate:24.04.82603
+delegateDockerImage: harness/delegate:24.07.83609
 
 # Annotations for delegate deployment, prometheus is added by default
 annotations:
