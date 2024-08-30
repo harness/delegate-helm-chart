@@ -1,4 +1,4 @@
-{{- if and (.Values.autoscaling.enabled) (semverCompare "<1.23.x-0" .Capabilities.KubeVersion.GitVersion)  }}
+{{- if and (.Values.autoscaling.enabled) (semverCompare "<1.23.x-0" .Capabilities.KubeVersion.Version)  }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
