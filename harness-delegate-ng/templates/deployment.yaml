@@ -115,9 +115,9 @@ spec:
           {{- with .Values.custom_mounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
-        {{- with .Values.custom_containers }}
-          {{- toYaml . | nindent 8 }}
-        {{- end }}
+      {{- with .Values.custom_containers }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
       {{- if $.Values.shared_certificates.ca_bundle }}
         - name: certvol
