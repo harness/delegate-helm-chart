@@ -191,6 +191,18 @@ shared_certificates:
     # - /etc/ssl/certs/ca-certificates.crt
     # - /kaniko/ssl/certs/additional-ca-cert-bundle.crt
 
+# additional init containers for the delegate pod
+custom_init_containers:
+  # - name: init-container
+  #   image: busybox
+  #   command: ['sh', '-c', 'echo "Hello from init container!"']
+
+# additional sidecar containers for the delegate pod
+custom_containers:
+  # - name: sidecar
+  #   image: busybox
+  #   command: ['sh', '-c', 'echo "Hello from sidecar!"']
+
 # additional environment variables for the delegate pod
 custom_envs:
   # - name: DELEGATE_TASK_CAPACITY
