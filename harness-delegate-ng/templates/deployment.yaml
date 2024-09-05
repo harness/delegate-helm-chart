@@ -33,6 +33,10 @@ spec:
       {{- end }}
       securityContext:
         fsGroup: 1001
+      {{- if .Values.custom_init_containers }}
+      initContainers: 
+        {{- toYaml .Values.custom_init_containers | nindent 8 }}
+      {{- end }}
       containers:
         - name: delegate
           {{- if and .Values.image.registry .Values.image.repository}}
@@ -111,6 +115,9 @@ spec:
           {{- with .Values.custom_mounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
+        {{- with .Values.custom_containers }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
       volumes:
       {{- if $.Values.shared_certificates.ca_bundle }}
         - name: certvol
