@@ -52,6 +52,15 @@ annotations:
   prometheus.io/port: "3460"
   prometheus.io/path: "/api/metrics"
 
+# Annotations that will be applied to both pod and deployment spec
+delegateAnnotations: {}
+
+# Labels that will be applied to pod spec
+delegatePodLabels: {}
+
+# Labels that will be applied to both deployment and pod spec
+delegateLabels: {}
+
 imagePullSecret: ""
 
 # Endpoint that will point to harness platform. For accessing SAAS platform use the default value.

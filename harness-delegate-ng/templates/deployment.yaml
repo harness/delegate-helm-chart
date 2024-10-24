@@ -3,6 +3,13 @@ kind: Deployment
 metadata:
   labels:
     {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+    {{- if .Values.delegateLabels }}
+      {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.delegateLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.delegateAnnotations }}
+  annotations:
+    {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.delegateAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
   name: {{ include "harness-delegate-ng.fullname" . }}
   namespace: {{ .Release.Namespace }}
 spec:
@@ -21,8 +28,17 @@ spec:
         {{- toYaml .Values.annotations | nindent 8 }}
         checksum/secret: {{ include (print .Template.BasePath "/secret.yaml") . | sha256sum | trunc 63 }}
         checksum/configmap: {{ include (print .Template.BasePath "/configMap.yaml") . | sha256sum | trunc 63 }}
+        {{- if .Values.delegateAnnotations }}
+          {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.delegateAnnotations "context" $ ) | nindent 8 }}
+        {{- end }}
       labels:
         {{- include "harness-delegate-ng.selectorLabels" . | nindent 8 }}
+        {{- if .Values.delegateLabels }}
+          {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.delegateLabels "context" $ ) | nindent 8 }}
+        {{- end }}
+        {{- if .Values.delegatePodLabels }}
+          {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.delegatePodLabels "context" $ ) | nindent 8 }}
+        {{- end }}
     spec:
       serviceAccountName: {{ include "harness-delegate-ng.serviceAccountName" . }}
       terminationGracePeriodSeconds: 600
@@ -34,7 +50,7 @@ spec:
       securityContext:
         fsGroup: 1001
       {{- if .Values.custom_init_containers }}
-      initContainers: 
+      initContainers:
         {{- toYaml .Values.custom_init_containers | nindent 8 }}
       {{- end }}
       containers:
