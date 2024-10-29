@@ -126,3 +126,18 @@ Define the upgrader token name
 {{- .Values.upgrader.existingUpgraderToken | trunc 63 | toString }}
 {{- end }}
 {{- end }}
+
+{{/*
+Renders a value that contains template.
+Usage:
+{{ include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.path.to.the.Value "context" $) }}
+*/}}
+{{- define "harness-delegate-ng.tplvalues.render" -}}
+    {{- if typeIs "string" .value }}
+        {{- tpl .value .context }}
+    {{- else }}
+        {{- if .value }}
+            {{- tpl (.value | toYaml) .context }}
+        {{- end }}
+    {{- end }}
+{{- end -}}
