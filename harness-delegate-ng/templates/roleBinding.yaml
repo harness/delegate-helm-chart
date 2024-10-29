@@ -7,6 +7,13 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+      {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations:
+    {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
 subjects:
   - kind: ServiceAccount
     name: {{ template "harness-delegate-ng.serviceAccountName" . }}

@@ -46,20 +46,18 @@ deployMode: "KUBERNETES"
 
 delegateDockerImage: harness/delegate:24.07.83404
 
+commonAnnotations: {}  # Annotations that will be applied to all resources
+delegateAnnotations: {}  # Annotations that will be applied to both pod and deployment spec for Delegate
 # Annotations for delegate deployment, prometheus is added by default
 annotations:
   prometheus.io/scrape: "true"
   prometheus.io/port: "3460"
   prometheus.io/path: "/api/metrics"
 
-# Annotations that will be applied to both pod and deployment spec
-delegateAnnotations: {}
 
-# Labels that will be applied to pod spec
-delegatePodLabels: {}
-
-# Labels that will be applied to both deployment and pod spec
-delegateLabels: {}
+commonLabels: {}  # Labels that will be applied to all resources
+delegatePodLabels: {}  # Labels that will be applied to pod spec
+delegateLabels: {}  # Labels that will be applied to both deployment and pod spec for Delegate
 
 imagePullSecret: ""
 
