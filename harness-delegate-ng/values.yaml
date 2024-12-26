@@ -120,6 +120,7 @@ javaOpts: "-Xms64M"
 upgrader:
   enabled: true
   upgraderDockerImage: "harness/upgrader:latest"
+  registryMirror: ""
   image:
     pullPolicy: Always
     # Uncomment below lines to use a custom registry + repository, a different repository or a different tag, this will override the upgraderDockerImage

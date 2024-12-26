@@ -23,4 +23,7 @@ data:
     delegateConfig:
       accountId: {{ .Values.accountId }}
       managerHost: {{ .Values.managerEndpoint }}
+      {{- if .Values.upgrader.registryMirror }}
+      registryMirror: {{ .Values.upgrader.registryMirror }}
+      {{- end }}
 {{- end }}
