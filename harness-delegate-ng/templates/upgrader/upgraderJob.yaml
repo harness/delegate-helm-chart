@@ -48,6 +48,10 @@ spec:
                   mountPath: /ca-bundle
                   readOnly: true
               {{- end }}
+              {{- if .Values.mTLS.secretName }}
+                - name: client-certificate
+                  mountPath: /etc/mtls
+              {{- end }}
                 - name: config-volume
                   mountPath: /etc/config
           volumes:
@@ -56,6 +60,11 @@ spec:
               secret:
                 secretName: {{ .Values.upgraderCustomCa.secretName }}
                 defaultMode: 400
+          {{- end }}
+          {{- if .Values.mTLS.secretName }}
+            - name: client-certificate
+              secret:
+                secretName: {{ .Values.mTLS.secretName }}
           {{- end }}
             - name: config-volume
               configMap:

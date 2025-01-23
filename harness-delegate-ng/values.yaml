@@ -13,8 +13,8 @@ fullnameOverride: ""
 
 mTLS:
   secretName: ""
-  clientCertificateFilePath: ""
-  clientCertificateKeyFilePath: ""
+  clientCertificateFileName: ""
+  clientCertificateKeyFileName: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
