@@ -127,8 +127,14 @@ spec:
             - configMapRef:
                 name: {{ template "harness-delegate-ng.fullname" . }}-shared-certificates
                 optional: true
-          {{- with .Values.custom_envs }}
           env:
+          {{- if .Values.mTLS.secretName }}
+            - name: DELEGATE_CLIENT_CERTIFICATE_PATH
+              value: "/etc/mtls/client.crt"
+            - name: DELEGATE_CLIENT_CERTIFICATE_KEY_PATH
+              value: "/etc/mtls/client.key"
+          {{- end }}
+          {{- with .Values.custom_envs }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
@@ -141,6 +147,10 @@ spec:
             - name: custom-certs
               mountPath: /opt/harness-delegate/ca-bundle/
               readOnly: true
+          {{- end }}
+          {{- if .Values.mTLS.secretName }}
+            - name: client-certificate
+              mountPath: /etc/mtls
           {{- end }}
           {{- with .Values.custom_mounts }}
             {{- toYaml . | nindent 12 }}
@@ -161,6 +171,12 @@ spec:
         - name: custom-certs
           secret:
             secretName: {{ .Values.delegateCustomCa.secretName }}
+            defaultMode: 400
+      {{- end }}
+      {{- if .Values.mTLS.secretName }}
+        - name: client-certificate
+          secret:
+            secretName: {{ .Values.mTLS.secretName }}
             defaultMode: 400
       {{- end }}
       {{- with .Values.custom_volumes }}
