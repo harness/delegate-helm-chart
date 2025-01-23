@@ -26,4 +26,17 @@ data:
       {{- if .Values.upgrader.registryMirror }}
       registryMirror: {{ .Values.upgrader.registryMirror }}
       {{- end }}
+      {{- if .Values.mTLS.secretName }}
+        {{- if .Values.mTLS.clientCertificateFilePath }}
+      clientCertificateFilePath: {{ .Values.mTLS.clientCertificateFilePath }}
+        {{- else }}
+      clientCertificateFilePath: "/etc/mtls/client.crt"
+        {{- end }}
+
+        {{- if .Values.mTLS.clientCertificateKeyFilePath }}
+      clientCertificateKeyFilePath: {{ .Values.mTLS.clientCertificateKeyFilePath }}
+        {{- else }}
+      clientCertificateKeyFilePath: "/etc/mtls/client.key"
+        {{- end }}
+      {{- end }}
 {{- end }}
