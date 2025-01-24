@@ -127,14 +127,8 @@ spec:
             - configMapRef:
                 name: {{ template "harness-delegate-ng.fullname" . }}-shared-certificates
                 optional: true
-          env:
-          {{- if .Values.mTLS.secretName }}
-            - name: DELEGATE_CLIENT_CERTIFICATE_PATH
-              value: "/etc/mtls/client.crt"
-            - name: DELEGATE_CLIENT_CERTIFICATE_KEY_PATH
-              value: "/etc/mtls/client.key"
-          {{- end }}
           {{- with .Values.custom_envs }}
+          env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
