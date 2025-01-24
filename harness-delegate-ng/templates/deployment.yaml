@@ -151,6 +151,7 @@ spec:
           {{- if .Values.mTLS.secretName }}
             - name: client-certificate
               mountPath: /etc/mtls
+              readOnly: true
           {{- end }}
           {{- with .Values.custom_mounts }}
             {{- toYaml . | nindent 12 }}

@@ -51,6 +51,7 @@ spec:
               {{- if .Values.mTLS.secretName }}
                 - name: client-certificate
                   mountPath: /etc/mtls
+                  readOnly: true
               {{- end }}
                 - name: config-volume
                   mountPath: /etc/config
