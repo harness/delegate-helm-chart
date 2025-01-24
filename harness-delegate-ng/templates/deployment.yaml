@@ -142,6 +142,11 @@ spec:
               mountPath: /opt/harness-delegate/ca-bundle/
               readOnly: true
           {{- end }}
+          {{- if .Values.mTLS.secretName }}
+            - name: client-certificate
+              mountPath: /etc/mtls
+              readOnly: true
+          {{- end }}
           {{- with .Values.custom_mounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -161,6 +166,12 @@ spec:
         - name: custom-certs
           secret:
             secretName: {{ .Values.delegateCustomCa.secretName }}
+            defaultMode: 400
+      {{- end }}
+      {{- if .Values.mTLS.secretName }}
+        - name: client-certificate
+          secret:
+            secretName: {{ .Values.mTLS.secretName }}
             defaultMode: 400
       {{- end }}
       {{- with .Values.custom_volumes }}
