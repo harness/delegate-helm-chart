@@ -20,6 +20,8 @@ data:
     workloadName: {{ template "harness-delegate-ng.fullname" . }}
     namespace: {{ .Release.Namespace }}
     containerName: delegate
+    clientCertificateFilePath: "/etc/mtls/client.crt"
+    clientCertificateKeyFilePath: "/etc/mtls/client.key"
     delegateConfig:
       accountId: {{ .Values.accountId }}
       managerHost: {{ .Values.managerEndpoint }}
@@ -27,7 +29,5 @@ data:
       registryMirror: {{ .Values.upgrader.registryMirror }}
       {{- end }}
       {{- if .Values.mTLS.secretName }}
-      clientCertificateFilePath: "/etc/mtls/client.crt"
-      clientCertificateKeyFilePath: "/etc/mtls/client.key"
       {{- end }}
 {{- end }}
