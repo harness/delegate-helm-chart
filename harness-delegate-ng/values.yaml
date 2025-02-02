@@ -47,7 +47,7 @@ delegateName: harness-delegate-ng
 
 deployMode: "KUBERNETES"
 
-delegateDockerImage: harness/delegate:24.07.83404
+delegateDockerImage: harness/delegate:24.09.83900
 
 commonAnnotations: {}  # Annotations that will be applied to all resources
 delegateAnnotations: {}  # Annotations that will be applied to both pod and deployment spec for Delegate
