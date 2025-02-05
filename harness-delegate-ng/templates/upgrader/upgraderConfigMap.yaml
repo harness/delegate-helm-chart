@@ -20,14 +20,14 @@ data:
     workloadName: {{ template "harness-delegate-ng.fullname" . }}
     namespace: {{ .Release.Namespace }}
     containerName: delegate
+    {{- if .Values.mTLS.secretName }}
     clientCertificateFilePath: "/etc/mtls/client.crt"
     clientCertificateKeyFilePath: "/etc/mtls/client.key"
+    {{- end }}
+    {{- if .Values.upgrader.registryMirror }}
+    registryMirror: {{ .Values.upgrader.registryMirror }}
+    {{- end }}
     delegateConfig:
       accountId: {{ .Values.accountId }}
       managerHost: {{ .Values.managerEndpoint }}
-      {{- if .Values.upgrader.registryMirror }}
-      registryMirror: {{ .Values.upgrader.registryMirror }}
-      {{- end }}
-      {{- if .Values.mTLS.secretName }}
-      {{- end }}
 {{- end }}
