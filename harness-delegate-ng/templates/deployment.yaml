@@ -61,8 +61,10 @@ spec:
       imagePullSecrets:
       - name: {{ .Values.imagePullSecret }}
       {{- end }}
+      {{- if .Values.securityContext.runAsRoot }}
       securityContext:
-        fsGroup: 1001
+        {{- toYaml .Values.delegatePodSecurityContext | nindent 8 }}
+      {{- end }}
       {{- if .Values.custom_init_containers }}
       initContainers:
         {{- toYaml .Values.custom_init_containers | nindent 8 }}

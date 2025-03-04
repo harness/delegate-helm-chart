@@ -140,8 +140,12 @@ upgrader:
   ## - Do not use Secrets managed by other helm delpoyments.
   existingUpgraderToken: ""
 
-  # Set security context for upgrader
+  # Set security context for upgrader container
   securityContext:
+
+  # Set security context for upgrader container
+  podSecurityContext: 
+    fsGroup: 1001
 
 # This field is DEPRECATED, DON'T OVERRIDE/USE THIS!!
 # To set root/non-root access and other security context use delegateSecurityContext field below.
@@ -149,10 +153,14 @@ upgrader:
 securityContext:
   runAsRoot: true
 
-# Set security context for delegate
+# Set security context for delegate container
 delegateSecurityContext:
   allowPrivilegeEscalation: false
   runAsUser: 0
+
+# Set security context for delegate container
+delegatePodSecurityContext:
+  fsGroup: 1001
 
 nextGen: true
 

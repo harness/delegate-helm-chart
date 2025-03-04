@@ -23,8 +23,10 @@ spec:
         spec:
           serviceAccountName: {{ template "harness-delegate-ng.fullname" . }}-{{ .Values.upgrader.cronJobServiceAccountName }}
           restartPolicy: Never
+          {{- if .Values.upgrader.podSecurityContext }}
           securityContext:
-            fsGroup: 1001
+            {{- toYaml .Values.upgrader.podSecurityContext | nindent 12 }}
+          {{- end }}
           containers:
             - name: upgrader
               {{- if and .Values.upgrader.image.registry .Values.upgrader.image.repository}}
