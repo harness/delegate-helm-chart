@@ -1,4 +1,4 @@
-{{- if eq .Values.k8sPermissionsType "NAMESPACE_ADMIN" }}
+{{- if and .Values.k8sPermissionsType (eq .Values.k8sPermissionsType "NAMESPACE_ADMIN") }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:

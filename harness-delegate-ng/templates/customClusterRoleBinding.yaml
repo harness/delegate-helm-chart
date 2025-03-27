@@ -1,8 +1,8 @@
-{{- if and .Values.k8sPermissionsType (or (eq .Values.k8sPermissionsType "CLUSTER_ADMIN") (eq .Values.k8sPermissionsType "CLUSTER_VIEWER")) }}
+{{- if and (ne (.Values.CustomClusterRole | default "") "") (or (not .Values.k8sPermissionsType) (eq .Values.k8sPermissionsType "")) }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ template "harness-delegate-ng.fullname" . }}-{{ .Values.k8sPermissionsType | lower | replace "_" "-" }}
+  name: {{ template "harness-delegate-ng.fullname" . }}-custom-clusterRoleBinding
   labels:
     {{- include "harness-delegate-ng.labels" . | nindent 4 }}
     {{- if .Values.commonLabels }}
@@ -18,6 +18,6 @@ subjects:
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
-  name: {{ include "harness-delegate-ng.accessLevel" .}}
+  name: {{ .Values.CustomClusterRole }}
   apiGroup: rbac.authorization.k8s.io
 {{- end }}
