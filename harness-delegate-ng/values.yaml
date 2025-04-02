@@ -131,6 +131,8 @@ upgrader:
     # repository: null
     # tag: null
 
+  imagePullSecret: ""
+
   cronJobServiceAccountName: "upgrader-cronjob-sa"
   # Use existing Secret which stores UPGRADER_TOKEN key instead of creating a new one. The value should be set with the `UPGRADER_TOKEN` key inside the secret.
   ## The use of external secrets allows you to manage credentials from external tools like Vault, 1Password, SealedSecrets, among other.
