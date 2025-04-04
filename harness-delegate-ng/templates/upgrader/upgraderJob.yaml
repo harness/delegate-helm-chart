@@ -23,6 +23,10 @@ spec:
         spec:
           serviceAccountName: {{ template "harness-delegate-ng.fullname" . }}-{{ .Values.upgrader.cronJobServiceAccountName }}
           restartPolicy: Never
+          {{- if .Values.upgrader.imagePullSecret }}
+          imagePullSecrets:
+          - name: {{ .Values.upgrader.imagePullSecret }}
+          {{- end }}
           securityContext:
             fsGroup: 1001
           containers:
