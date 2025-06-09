@@ -1,4 +1,4 @@
-{{- if and (.Values.autoscaling.enabled) (semverCompare ">=1.23.x-0" .Capabilities.KubeVersion.Version) }}
+{{- if and (.Values.autoscaling.enabled) (semverCompare ">=1.23.x-0" .Capabilities.KubeVersion.Version) (or .Values.autoscaling.targetCPUUtilizationPercentage .Values.autoscaling.targetMemoryUtilizationPercentage) }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
