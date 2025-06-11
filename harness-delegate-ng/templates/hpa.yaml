@@ -1,4 +1,6 @@
-{{- if and (.Values.autoscaling.enabled) (semverCompare ">=1.23.x-0" .Capabilities.KubeVersion.Version) (or .Values.autoscaling.targetCPUUtilizationPercentage .Values.autoscaling.targetMemoryUtilizationPercentage) }}
+{{- $cpuEnabled := and .Values.autoscaling.targetCPUUtilizationPercentage (gt (int .Values.autoscaling.targetCPUUtilizationPercentage) 0) -}}
+{{- $memEnabled := and .Values.autoscaling.targetMemoryUtilizationPercentage (gt (int .Values.autoscaling.targetMemoryUtilizationPercentage) 0) -}}
+{{- if and .Values.autoscaling.enabled (semverCompare ">=1.23.x-0" .Capabilities.KubeVersion.Version) (or $cpuEnabled $memEnabled) }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -21,7 +23,7 @@ spec:
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
-    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    {{- if $cpuEnabled }}
     - type: Resource
       resource:
         name: cpu
@@ -29,7 +31,7 @@ spec:
           type: Utilization
           averageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
     {{- end }}
-    {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- if $memEnabled }}
     - type: Resource
       resource:
         name: memory

@@ -29,10 +29,10 @@ service:
 
 # Edit this if you want to enable horizontal pod autoscaling
 autoscaling:
-  enabled: false
+  enabled: true
   minReplicas: 1
   maxReplicas: 10
-  # targetCPUUtilizationPercentage: 80
+  targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
