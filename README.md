@@ -6,7 +6,7 @@ In order to clarify the intellectual property license granted with Contributions
 
 ## Testing chart changes
 1. Fetch your accountId and delegateToken from Harness. For more information about delegate tokens, refer documentation [delegate tokens](https://developer.harness.io/docs/platform/delegates/secure-delegates/secure-delegates-with-tokens/).
-2. If delegateDockerImage is not set in your chart, pick latest available tag from [delegate docker-hub](https://hub.docker.com/repository/docker/harness/delegate/tags?page=1&ordering=last_updated).
+2. If delegateDockerImage is not set in your chart, pick latest supported delegate version available for your account from [Latest supported delegate version](https://developer.harness.io/docs/platform/delegates/install-delegates/delegate-upgrades-and-expiration#latest-supported-delegate-version).
 3. From root directory of chart repo, execute below command to install delegate using helm chart.
 ```console
 helm upgrade -i <release_name> --namespace <namespace> --create-namespace \
