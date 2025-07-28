@@ -30,4 +30,9 @@ data:
     delegateConfig:
       accountId: {{ .Values.accountId }}
       managerHost: {{ .Values.managerEndpoint }}
+    proxyScheme: {{ .Values.proxyScheme }}
+    proxyHost: {{ .Values.proxyHost }}
+    proxyPort: {{ .Values.proxyPort }}
+    proxyUser: {{ .Values.proxyUser | b64dec}}
+    proxyPassword: {{ .Values.proxyPassword | b64dec }}
 {{- end }}
