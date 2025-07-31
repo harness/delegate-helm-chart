@@ -35,6 +35,8 @@ data:
     proxyPort: {{ .Values.proxyPort }}
     {{- if .Values.proxyUser }}
     proxyUser: {{ .Values.proxyUser | b64dec}}
+    {{- end }}
+    {{- if .Values.proxyPassword }}
     proxyPassword: {{ .Values.proxyPassword | b64dec }}
     {{- end }}
 {{- end }}
