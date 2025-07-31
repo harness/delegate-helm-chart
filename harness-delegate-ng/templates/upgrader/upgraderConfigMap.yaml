@@ -33,6 +33,8 @@ data:
     proxyScheme: {{ .Values.proxyScheme }}
     proxyHost: {{ .Values.proxyHost }}
     proxyPort: {{ .Values.proxyPort }}
+    {{- if .Values.proxyUser }}
     proxyUser: {{ .Values.proxyUser | b64dec}}
     proxyPassword: {{ .Values.proxyPassword | b64dec }}
+    {{- end }}
 {{- end }}
