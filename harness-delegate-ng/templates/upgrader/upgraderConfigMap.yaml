@@ -45,3 +45,4 @@ data:
     {{- if .Values.proxyPassword }}
       proxyPassword: {{ .Values.proxyPassword | b64dec }}
     {{- end }}
+  {{- end }}
