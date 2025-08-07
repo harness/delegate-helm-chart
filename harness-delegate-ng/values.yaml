@@ -100,6 +100,14 @@ replicas: 1
 # possible due to custom volumes or mounts that can only be attached to a single pod.
 deploymentStrategy: "RollingUpdate"
 
+# Rolling update configuration (only applies when deploymentStrategy is "RollingUpdate")
+# These settings control how many pods can be created/destroyed during updates
+rollingUpdate:
+  # Maximum number of pods that can be created above the desired replica count during updates
+  maxSurge: 1
+  # Maximum number of pods that can be unavailable during the update process
+  maxUnavailable: 1
+
 # Resource limits of container running delegate image in kubernetes
 # If you want to set custom resource limits, uncomment the below line and set the values for cpu and memory request/limit
 # resources:
