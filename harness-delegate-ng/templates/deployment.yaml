@@ -31,9 +31,17 @@ spec:
   strategy:
     type: {{ .Values.deploymentStrategy | default "RollingUpdate" }}
     {{- if eq (.Values.deploymentStrategy | default "RollingUpdate") "RollingUpdate" }}
+    {{- with .Values.rollingUpdate }}
+    {{- if or .maxSurge .maxUnavailable }}
     rollingUpdate:
-      maxSurge: {{ .Values.rollingUpdate.maxSurge | default 1 }}
-      maxUnavailable: {{ .Values.rollingUpdate.maxUnavailable | default 1 }}
+      {{- if .maxSurge }}
+      maxSurge: {{ .maxSurge | quote }}
+      {{- end }}
+      {{- if .maxUnavailable }}
+      maxUnavailable: {{ .maxUnavailable | quote }}
+      {{- end }}
+    {{- end }}
+    {{- end }}
     {{- end }}
   template:
     metadata:
