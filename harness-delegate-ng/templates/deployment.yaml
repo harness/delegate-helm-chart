@@ -30,6 +30,19 @@ spec:
       {{- include "harness-delegate-ng.selectorLabels" . | nindent 6 }}
   strategy:
     type: {{ .Values.deploymentStrategy | default "RollingUpdate" }}
+    {{- if eq (.Values.deploymentStrategy | default "RollingUpdate") "RollingUpdate" }}
+    {{- with .Values.rollingUpdate }}
+    {{- if or .maxSurge .maxUnavailable }}
+    rollingUpdate:
+      {{- if .maxSurge }}
+      maxSurge: {{ .maxSurge | quote }}
+      {{- end }}
+      {{- if .maxUnavailable }}
+      maxUnavailable: {{ .maxUnavailable | quote }}
+      {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- end }}
   template:
     metadata:
       annotations:
