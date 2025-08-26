@@ -139,6 +139,9 @@ upgrader:
     # registry: null
     # repository: null
     # tag: null
+  
+  # Schedule for the upgrader cronjob (cron format)
+  schedule: "0 */1 * * *"
 
   imagePullSecret: ""
 
