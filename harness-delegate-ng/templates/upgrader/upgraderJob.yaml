@@ -14,7 +14,7 @@ metadata:
   name: {{ template "harness-delegate-ng.fullname" . }}-upgrader-job
   namespace: {{ .Release.Namespace }}
 spec:
-  schedule: "0 */1 * * *"
+  schedule: {{ .Values.upgrader.schedule | quote }}
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 20
   jobTemplate:
