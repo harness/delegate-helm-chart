@@ -59,6 +59,10 @@ spec:
               {{- end }}
                 - name: config-volume
                   mountPath: /etc/config
+              {{- if .Values.upgrader.resources }}
+              resources:
+                {{- toYaml .Values.upgrader.resources | nindent 16 }}
+              {{- end }}
           volumes:
           {{- if $.Values.upgraderCustomCa.secretName }}
             - name: custom-certs
