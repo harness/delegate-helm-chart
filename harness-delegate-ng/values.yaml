@@ -47,7 +47,7 @@ delegateName: harness-delegate-ng
 
 deployMode: "KUBERNETES"
 
-delegateDockerImage: harness/delegate:25.10.86901
+delegateDockerImage: us-docker.pkg.dev/gar-prod-setup/harness-public/harness/delegate:25.12.87402
 
 commonAnnotations: {}  # Annotations that will be applied to all resources
 delegateAnnotations: {}  # Annotations that will be applied to both pod and deployment spec for Delegate
@@ -131,7 +131,7 @@ javaOpts: "-Xms64M"
 
 upgrader:
   enabled: true
-  upgraderDockerImage: "harness/upgrader:latest"
+  upgraderDockerImage: "us-docker.pkg.dev/gar-prod-setup/harness-public/harness/upgrader:latest"
   registryMirror: ""
   image:
     pullPolicy: Always
