@@ -168,6 +168,10 @@ delegateSecurityContext:
   allowPrivilegeEscalation: false
   runAsUser: 0
 
+# Set fsGroup for Pod-level security context
+# Controls file system permissions for mounted volumes
+fsGroup: 1001
+
 nextGen: true
 
 # Below are the required fields, no default values are populated for these.

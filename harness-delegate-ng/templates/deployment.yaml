@@ -75,7 +75,7 @@ spec:
       - name: {{ .Values.imagePullSecret }}
       {{- end }}
       securityContext:
-        fsGroup: 1001
+        fsGroup: {{ .Values.fsGroup }}
       {{- if .Values.custom_init_containers }}
       initContainers:
         {{- toYaml .Values.custom_init_containers | nindent 8 }}
