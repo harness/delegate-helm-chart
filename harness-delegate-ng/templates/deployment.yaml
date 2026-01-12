@@ -91,7 +91,8 @@ spec:
           {{- end }}
           {{- if .Values.securityContext.runAsRoot }}
           securityContext:
-            {{- toYaml .Values.delegateSecurityContext | nindent 12 }}
+            allowPrivilegeEscalation: {{ .Values.delegateSecurityContext.allowPrivilegeEscalation }}
+            runAsUser: {{ .Values.runAsUser }}
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:

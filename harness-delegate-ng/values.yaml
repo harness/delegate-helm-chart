@@ -163,10 +163,14 @@ upgrader:
 securityContext:
   runAsRoot: true
 
-# Set security context for delegate
+# Set user ID for the delegate container process
+# 0 = root, 1001 = non-root (matches Dockerfile's USER)
+runAsUser: 0
+
+# Set security context for delegate container
 delegateSecurityContext:
   allowPrivilegeEscalation: false
-  runAsUser: 0
+  runAsUser: 0  # Will be overridden by runAsUser field above if securityContext.runAsRoot is true
 
 # Set fsGroup for Pod-level security context
 # Controls file system permissions for mounted volumes
