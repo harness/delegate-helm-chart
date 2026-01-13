@@ -170,8 +170,7 @@ delegatePodSecurityContext:
 # Set security context for delegate container
 delegateSecurityContext:
   allowPrivilegeEscalation: false
-  runAsUser: 0  # Will be overridden by runAsUser field above if securityContext.runAsRoot is true
-
+  runAsUser: 0
 nextGen: true
 
 # Below are the required fields, no default values are populated for these.
