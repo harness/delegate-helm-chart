@@ -163,9 +163,8 @@ upgrader:
 securityContext:
   runAsRoot: true
 
-# Set security context for delegate container
+# Set security context for delegate Pod
 delegatePodSecurityContext:
-  runAsUser: 0
   fsGroup: 1001
 
 # Set security context for delegate container
