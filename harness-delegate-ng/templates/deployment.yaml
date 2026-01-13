@@ -75,7 +75,7 @@ spec:
       - name: {{ .Values.imagePullSecret }}
       {{- end }}
       securityContext:
-        fsGroup: {{ .Values.fsGroup }}
+        {{- toYaml .Values.delegatePodSecurityContext | nindent 8 }}
       {{- if .Values.custom_init_containers }}
       initContainers:
         {{- toYaml .Values.custom_init_containers | nindent 8 }}
@@ -91,8 +91,7 @@ spec:
           {{- end }}
           {{- if .Values.securityContext.runAsRoot }}
           securityContext:
-            allowPrivilegeEscalation: {{ .Values.delegateSecurityContext.allowPrivilegeEscalation }}
-            runAsUser: {{ .Values.runAsUser }}
+            {{- toYaml .Values.delegateSecurityContext | nindent 12 }}
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
