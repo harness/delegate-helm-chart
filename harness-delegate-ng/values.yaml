@@ -47,7 +47,7 @@ delegateName: harness-delegate-ng
 
 deployMode: "KUBERNETES"
 
-delegateDockerImage: harness/delegate:25.10.86901
+delegateDockerImage: us-docker.pkg.dev/gar-prod-setup/harness-public/harness/delegate:25.12.87402
 
 commonAnnotations: {}  # Annotations that will be applied to all resources
 delegateAnnotations: {}  # Annotations that will be applied to both pod and deployment spec for Delegate
@@ -131,7 +131,7 @@ javaOpts: "-Xms64M"
 
 upgrader:
   enabled: true
-  upgraderDockerImage: "harness/upgrader:latest"
+  upgraderDockerImage: "us-docker.pkg.dev/gar-prod-setup/harness-public/harness/upgrader:latest"
   registryMirror: ""
   image:
     pullPolicy: Always
@@ -154,7 +154,12 @@ upgrader:
   ## - Do not use Secrets managed by other helm delpoyments.
   existingUpgraderToken: ""
 
-  # Set security context for upgrader
+  # Set security context for upgrader pod
+  pod:
+    securityContext:
+      fsGroup: 1001
+
+  # Set security context for upgrader container
   securityContext:
 
 # This field is DEPRECATED, DON'T OVERRIDE/USE THIS!!
@@ -163,10 +168,16 @@ upgrader:
 securityContext:
   runAsRoot: true
 
-# Set security context for delegate
-delegateSecurityContext:
-  allowPrivilegeEscalation: false
-  runAsUser: 0
+# Set security context for delegate Pod
+delegate:
+  pod:
+    securityContext:
+      fsGroup: 1001
+  # Set security context for delegate container
+  securityContext:
+    allowPrivilegeEscalation: false
+    runAsUser: 0
+
 
 nextGen: true
 

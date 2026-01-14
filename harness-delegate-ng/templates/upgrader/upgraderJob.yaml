@@ -27,8 +27,10 @@ spec:
           imagePullSecrets:
           - name: {{ .Values.upgrader.imagePullSecret }}
           {{- end }}
+          {{- if .Values.upgrader.pod.securityContext }}
           securityContext:
-            fsGroup: 1001
+            {{- toYaml .Values.upgrader.pod.securityContext | nindent 12 }}
+          {{- end }}
           containers:
             - name: upgrader
               {{- if and .Values.upgrader.image.registry .Values.upgrader.image.repository}}
