@@ -74,8 +74,10 @@ spec:
       imagePullSecrets:
       - name: {{ .Values.imagePullSecret }}
       {{- end }}
+      {{- if .Values.delegate.pod.securityContext }}
       securityContext:
-        {{- toYaml .Values.delegatePodSecurityContext | nindent 8 }}
+        {{- toYaml .Values.delegate.pod.securityContext | nindent 8 }}
+      {{- end }}
       {{- if .Values.custom_init_containers }}
       initContainers:
         {{- toYaml .Values.custom_init_containers | nindent 8 }}
@@ -90,8 +92,13 @@ spec:
           image: {{ .Values.delegateDockerImage }}
           {{- end }}
           {{- if .Values.securityContext.runAsRoot }}
+            {{- if .Values.delegateSecurityContext }}
           securityContext:
             {{- toYaml .Values.delegateSecurityContext | nindent 12 }}
+            {{- else if .Values.delegate.securityContext }}
+          securityContext:
+            {{- toYaml .Values.delegate.securityContext | nindent 12 }}
+            {{- end }}
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
