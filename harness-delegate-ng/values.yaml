@@ -178,10 +178,7 @@ delegate:
     allowPrivilegeEscalation: false
     runAsUser: 0
 
-# DEPRECATED: Use delegate.securityContext instead
-# Set security context for delegate container
-# This field is kept for backward compatibility. If set, it takes precedence over delegate.securityContext
-delegateSecurityContext:
+
 nextGen: true
 
 # Below are the required fields, no default values are populated for these.
