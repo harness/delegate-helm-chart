@@ -162,6 +162,9 @@ upgrader:
   # Set security context for upgrader container
   securityContext:
 
+  # Set tolerations for upgrader pod
+  tolerations: []
+
 # This field is DEPRECATED, DON'T OVERRIDE/USE THIS!!
 # To set root/non-root access and other security context use delegateSecurityContext field below.
 # Not removing this field to maintain backward compatibility.
