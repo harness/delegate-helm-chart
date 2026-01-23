@@ -80,4 +80,8 @@ spec:
             - name: config-volume
               configMap:
                 name: {{ template "harness-delegate-ng.fullname" . }}-upgrader-config
+          {{- with .Values.upgrader.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 {{- end }}
