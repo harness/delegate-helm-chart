@@ -71,18 +71,6 @@ Fetch access level using kubernetes permission value
   {{- end }}
 {{- end }}
 
-
-{{/*
-Check if custom role is provided in k8sPermissionsType
-*/}}
-{{- define "harness-delegate-ng.useCustomRole" -}}
-  {{- if or (or (eq .Values.k8sPermissionsType "CLUSTER_ADMIN") (eq .Values.k8sPermissionsType "CLUSTER_VIEWER") ) (eq .Values.k8sPermissionsType "NAMESPACE_ADMIN") }}
-  {{- print "false" }}
-  {{- else }}
-  {{- print "true" }}
-  {{- end }}
-{{- end }}
-
 {{/*
 Memory assigned to container in Mi
 */}}
