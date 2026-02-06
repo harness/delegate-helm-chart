@@ -19,11 +19,11 @@ rules:
     verbs: ["*"]
 {{- end }}
 
-{{- if eq .Values.k8sPermissionsType "CI_USER" }}
+{{- if eq .Values.k8sPermissionsType "CONTAINER_STEPS" }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: {{ template "harness-delegate-ng.fullname" . }}-harness-ci-user
+  name: {{ template "harness-delegate-ng.fullname" . }}-harness-container-steps
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "harness-delegate-ng.labels" . | nindent 4 }}
