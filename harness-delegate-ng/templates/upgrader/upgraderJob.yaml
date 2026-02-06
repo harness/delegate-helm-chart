@@ -4,10 +4,17 @@ kind: CronJob
 metadata:
   labels:
     {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+      {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations:
+    {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
   name: {{ template "harness-delegate-ng.fullname" . }}-upgrader-job
   namespace: {{ .Release.Namespace }}
 spec:
-  schedule: "0 */1 * * *"
+  schedule: {{ .Values.upgrader.schedule | quote }}
   concurrencyPolicy: Forbid
   startingDeadlineSeconds: 20
   jobTemplate:
@@ -16,8 +23,14 @@ spec:
         spec:
           serviceAccountName: {{ template "harness-delegate-ng.fullname" . }}-{{ .Values.upgrader.cronJobServiceAccountName }}
           restartPolicy: Never
+          {{- if .Values.upgrader.imagePullSecret }}
+          imagePullSecrets:
+          - name: {{ .Values.upgrader.imagePullSecret }}
+          {{- end }}
+          {{- if .Values.upgrader.pod.securityContext }}
           securityContext:
-            fsGroup: 1001
+            {{- toYaml .Values.upgrader.pod.securityContext | nindent 12 }}
+          {{- end }}
           containers:
             - name: upgrader
               {{- if and .Values.upgrader.image.registry .Values.upgrader.image.repository}}
@@ -28,6 +41,10 @@ spec:
               image: {{ .Values.upgrader.upgraderDockerImage }}
               {{- end }}
               imagePullPolicy: {{ .Values.upgrader.image.pullPolicy }}
+              {{- if .Values.upgrader.securityContext }}
+              securityContext:
+                {{- toYaml .Values.upgrader.securityContext | nindent 16 }}
+              {{- end }}
               envFrom:
                 - secretRef:
                     name: {{ include "harness-delegate-ng.upgraderDelegateToken" . }}
@@ -37,8 +54,17 @@ spec:
                   mountPath: /ca-bundle
                   readOnly: true
               {{- end }}
+              {{- if .Values.mTLS.secretName }}
+                - name: client-certificate
+                  mountPath: /etc/mtls
+                  readOnly: true
+              {{- end }}
                 - name: config-volume
                   mountPath: /etc/config
+              {{- if .Values.upgrader.resources }}
+              resources:
+                {{- toYaml .Values.upgrader.resources | nindent 16 }}
+              {{- end }}
           volumes:
           {{- if $.Values.upgraderCustomCa.secretName }}
             - name: custom-certs
@@ -46,7 +72,16 @@ spec:
                 secretName: {{ .Values.upgraderCustomCa.secretName }}
                 defaultMode: 400
           {{- end }}
+          {{- if .Values.mTLS.secretName }}
+            - name: client-certificate
+              secret:
+                secretName: {{ .Values.mTLS.secretName }}
+          {{- end }}
             - name: config-volume
               configMap:
-                name: {{ .Values.delegateName }}-upgrader-config
+                name: {{ template "harness-delegate-ng.fullname" . }}-upgrader-config
+          {{- with .Values.upgrader.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 {{- end }}

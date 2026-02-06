@@ -3,24 +3,69 @@ kind: Deployment
 metadata:
   labels:
     {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+      {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+    {{- if .Values.delegateLabels }}
+      {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.delegateLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if or .Values.commonAnnotations .Values.delegateAnnotations }}
+  annotations:
+    {{- if .Values.commonAnnotations }}
+      {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+    {{- end }}
+    {{- if .Values.delegateAnnotations }}
+      {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.delegateAnnotations "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- end }}
   name: {{ include "harness-delegate-ng.fullname" . }}
   namespace: {{ .Release.Namespace }}
 spec:
+  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicas }}
+  {{- end }}
   minReadySeconds: {{ .Values.minReadySeconds }}
   selector:
     matchLabels:
       {{- include "harness-delegate-ng.selectorLabels" . | nindent 6 }}
   strategy:
     type: {{ .Values.deploymentStrategy | default "RollingUpdate" }}
+    {{- if eq (.Values.deploymentStrategy | default "RollingUpdate") "RollingUpdate" }}
+    {{- with .Values.rollingUpdate }}
+    {{- if or .maxSurge .maxUnavailable }}
+    rollingUpdate:
+      {{- if .maxSurge }}
+      maxSurge: {{ .maxSurge | quote }}
+      {{- end }}
+      {{- if .maxUnavailable }}
+      maxUnavailable: {{ .maxUnavailable | quote }}
+      {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- end }}
   template:
     metadata:
       annotations:
         {{- toYaml .Values.annotations | nindent 8 }}
         checksum/secret: {{ include (print .Template.BasePath "/secret.yaml") . | sha256sum | trunc 63 }}
         checksum/configmap: {{ include (print .Template.BasePath "/configMap.yaml") . | sha256sum | trunc 63 }}
+        {{- if .Values.commonAnnotations }}
+          {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 8 }}
+        {{- end }}
+        {{- if .Values.delegateAnnotations }}
+          {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.delegateAnnotations "context" $ ) | nindent 8 }}
+        {{- end }}
       labels:
         {{- include "harness-delegate-ng.selectorLabels" . | nindent 8 }}
+        {{- if .Values.commonLabels }}
+          {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 8 }}
+        {{- end }}
+        {{- if .Values.delegateLabels }}
+          {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.delegateLabels "context" $ ) | nindent 8 }}
+        {{- end }}
+        {{- if .Values.delegatePodLabels }}
+          {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.delegatePodLabels "context" $ ) | nindent 8 }}
+        {{- end }}
     spec:
       serviceAccountName: {{ include "harness-delegate-ng.serviceAccountName" . }}
       terminationGracePeriodSeconds: 600
@@ -29,8 +74,14 @@ spec:
       imagePullSecrets:
       - name: {{ .Values.imagePullSecret }}
       {{- end }}
+      {{- if .Values.delegate.pod.securityContext }}
       securityContext:
-        fsGroup: 1001
+        {{- toYaml .Values.delegate.pod.securityContext | nindent 8 }}
+      {{- end }}
+      {{- if .Values.custom_init_containers }}
+      initContainers:
+        {{- toYaml .Values.custom_init_containers | nindent 8 }}
+      {{- end }}
       containers:
         - name: delegate
           {{- if and .Values.image.registry .Values.image.repository}}
@@ -41,8 +92,13 @@ spec:
           image: {{ .Values.delegateDockerImage }}
           {{- end }}
           {{- if .Values.securityContext.runAsRoot }}
+            {{- if .Values.delegateSecurityContext }}
           securityContext:
             {{- toYaml .Values.delegateSecurityContext | nindent 12 }}
+            {{- else if .Values.delegate.securityContext }}
+          securityContext:
+            {{- toYaml .Values.delegate.securityContext | nindent 12 }}
+            {{- end }}
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
@@ -106,9 +162,17 @@ spec:
               mountPath: /opt/harness-delegate/ca-bundle/
               readOnly: true
           {{- end }}
+          {{- if .Values.mTLS.secretName }}
+            - name: client-certificate
+              mountPath: /etc/mtls
+              readOnly: true
+          {{- end }}
           {{- with .Values.custom_mounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
+      {{- with .Values.custom_containers }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       volumes:
       {{- if $.Values.shared_certificates.ca_bundle }}
         - name: certvol
@@ -122,6 +186,12 @@ spec:
         - name: custom-certs
           secret:
             secretName: {{ .Values.delegateCustomCa.secretName }}
+            defaultMode: 400
+      {{- end }}
+      {{- if .Values.mTLS.secretName }}
+        - name: client-certificate
+          secret:
+            secretName: {{ .Values.mTLS.secretName }}
             defaultMode: 400
       {{- end }}
       {{- with .Values.custom_volumes }}

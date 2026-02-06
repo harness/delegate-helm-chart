@@ -11,6 +11,9 @@ image:
 
 fullnameOverride: ""
 
+mTLS:
+  secretName: ""
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -44,13 +47,20 @@ delegateName: harness-delegate-ng
 
 deployMode: "KUBERNETES"
 
-delegateDockerImage: harness/delegate:24.04.82603
+delegateDockerImage: us-docker.pkg.dev/gar-prod-setup/harness-public/harness/delegate:25.12.87402
 
+commonAnnotations: {}  # Annotations that will be applied to all resources
+delegateAnnotations: {}  # Annotations that will be applied to both pod and deployment spec for Delegate
 # Annotations for delegate deployment, prometheus is added by default
 annotations:
   prometheus.io/scrape: "true"
   prometheus.io/port: "3460"
   prometheus.io/path: "/api/metrics"
+
+
+commonLabels: {}  # Labels that will be applied to all resources
+delegatePodLabels: {}  # Labels that will be applied to pod spec
+delegateLabels: {}  # Labels that will be applied to both deployment and pod spec for Delegate
 
 imagePullSecret: ""
 
@@ -90,6 +100,15 @@ replicas: 1
 # possible due to custom volumes or mounts that can only be attached to a single pod.
 deploymentStrategy: "RollingUpdate"
 
+# Rolling update configuration (only applies when deploymentStrategy is "RollingUpdate").
+# By default, these are not set so Kubernetes uses its own defaults (currently 25%).
+# Uncomment and set if you want to override the defaults. You may use integers or percentage strings (e.g., "25%")
+# rollingUpdate:
+#   # Maximum number of pods that can be created above the desired replica count during updates
+#   maxSurge: "25%"
+#   # Maximum number of pods that can be unavailable during the update process
+#   maxUnavailable: "25%"
+
 # Resource limits of container running delegate image in kubernetes
 # If you want to set custom resource limits, uncomment the below line and set the values for cpu and memory request/limit
 # resources:
@@ -112,13 +131,19 @@ javaOpts: "-Xms64M"
 
 upgrader:
   enabled: true
-  upgraderDockerImage: "harness/upgrader:latest"
+  upgraderDockerImage: "us-docker.pkg.dev/gar-prod-setup/harness-public/harness/upgrader:latest"
+  registryMirror: ""
   image:
     pullPolicy: Always
     # Uncomment below lines to use a custom registry + repository, a different repository or a different tag, this will override the upgraderDockerImage
     # registry: null
     # repository: null
     # tag: null
+  
+  # Schedule for the upgrader cronjob (cron format)
+  schedule: "0 */1 * * *"
+
+  imagePullSecret: ""
 
   cronJobServiceAccountName: "upgrader-cronjob-sa"
   # Use existing Secret which stores UPGRADER_TOKEN key instead of creating a new one. The value should be set with the `UPGRADER_TOKEN` key inside the secret.
@@ -129,16 +154,33 @@ upgrader:
   ## - Do not use Secrets managed by other helm delpoyments.
   existingUpgraderToken: ""
 
+  # Set security context for upgrader pod
+  pod:
+    securityContext:
+      fsGroup: 1001
+
+  # Set security context for upgrader container
+  securityContext:
+
+  # Set tolerations for upgrader pod
+  tolerations: []
+
 # This field is DEPRECATED, DON'T OVERRIDE/USE THIS!!
 # To set root/non-root access and other security context use delegateSecurityContext field below.
 # Not removing this field to maintain backward compatibility.
 securityContext:
   runAsRoot: true
 
-# Set security context for delegate
-delegateSecurityContext:
-  allowPrivilegeEscalation: false
-  runAsUser: 0
+# Set security context for delegate Pod
+delegate:
+  pod:
+    securityContext:
+      fsGroup: 1001
+  # Set security context for delegate container
+  securityContext:
+    allowPrivilegeEscalation: false
+    runAsUser: 0
+
 
 nextGen: true
 
@@ -187,6 +229,18 @@ shared_certificates:
     # - /etc/ssl/certs/ca-bundle.crt
     # - /etc/ssl/certs/ca-certificates.crt
     # - /kaniko/ssl/certs/additional-ca-cert-bundle.crt
+
+# additional init containers for the delegate pod
+custom_init_containers:
+  # - name: init-container
+  #   image: busybox
+  #   command: ['sh', '-c', 'echo "Hello from init container!"']
+
+# additional sidecar containers for the delegate pod
+custom_containers:
+  # - name: sidecar
+  #   image: busybox
+  #   command: ['sh', '-c', 'echo "Hello from sidecar!"']
 
 # additional environment variables for the delegate pod
 custom_envs:

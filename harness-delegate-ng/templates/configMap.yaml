@@ -5,6 +5,13 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+      {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations:
+    {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
 data:
   ACCOUNT_ID: {{ .Values.accountId }}
   MANAGER_HOST_AND_PORT : {{ .Values.managerEndpoint }}
@@ -26,5 +33,7 @@ data:
   {{- if .Values.destinationCaPath }}
   DESTINATION_CA_PATH: {{ .Values.destinationCaPath }}
   {{- end }}
-
-
+  {{- if .Values.mTLS.secretName }}
+  DELEGATE_CLIENT_CERTIFICATE_PATH: "/etc/mtls/client.crt"
+  DELEGATE_CLIENT_CERTIFICATE_KEY_PATH: "/etc/mtls/client.key"
+  {{- end }}

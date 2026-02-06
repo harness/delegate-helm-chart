@@ -1,4 +1,6 @@
-{{- if and (.Values.autoscaling.enabled) (semverCompare ">=1.23.x-0" .Capabilities.KubeVersion.Version) }}
+{{- $cpuEnabled := and .Values.autoscaling.targetCPUUtilizationPercentage (gt (int .Values.autoscaling.targetCPUUtilizationPercentage) 0) -}}
+{{- $memEnabled := and .Values.autoscaling.targetMemoryUtilizationPercentage (gt (int .Values.autoscaling.targetMemoryUtilizationPercentage) 0) -}}
+{{- if and .Values.autoscaling.enabled (semverCompare ">=1.23.x-0" .Capabilities.KubeVersion.Version) (or $cpuEnabled $memEnabled) }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -6,6 +8,13 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+      {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations:
+    {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -14,7 +23,7 @@ spec:
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
-    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    {{- if $cpuEnabled }}
     - type: Resource
       resource:
         name: cpu
@@ -22,7 +31,7 @@ spec:
           type: Utilization
           averageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
     {{- end }}
-    {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- if $memEnabled }}
     - type: Resource
       resource:
         name: memory
@@ -31,4 +40,3 @@ spec:
           averageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
 {{- end }}
-

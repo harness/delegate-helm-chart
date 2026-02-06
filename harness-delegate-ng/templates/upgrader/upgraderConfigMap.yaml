@@ -6,14 +6,43 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+      {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations:
+    {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
 data:
   config.yaml: |
     mode: Delegate
     dryRun: false
-    workloadName: {{ .Values.delegateName }}
+    workloadName: {{ template "harness-delegate-ng.fullname" . }}
     namespace: {{ .Release.Namespace }}
     containerName: delegate
+    {{- if .Values.mTLS.secretName }}
+    clientCertificateFilePath: "/etc/mtls/client.crt"
+    clientCertificateKeyFilePath: "/etc/mtls/client.key"
+    {{- end }}
+    {{- if .Values.upgrader.registryMirror }}
+    registryMirror: {{ .Values.upgrader.registryMirror }}
+    {{- end }}
     delegateConfig:
       accountId: {{ .Values.accountId }}
       managerHost: {{ .Values.managerEndpoint }}
-{{- end }}
+    {{- if .Values.proxyScheme }}
+    proxyScheme: {{ .Values.proxyScheme }}
+    {{- end }}
+    {{- if .Values.proxyHost }}
+    proxyHost: {{ .Values.proxyHost }}
+    {{- end }}
+    {{- if .Values.proxyPort }}
+    proxyPort: {{ .Values.proxyPort }}
+    {{- end }}
+    {{- if .Values.proxyUser }}
+    proxyUser: {{ .Values.proxyUser | b64dec}}
+    {{- end }}
+    {{- if .Values.proxyPassword }}
+    proxyPassword: {{ .Values.proxyPassword | b64dec }}
+    {{- end }}
+  {{- end }}

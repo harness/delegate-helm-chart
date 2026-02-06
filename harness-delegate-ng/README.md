@@ -1,6 +1,6 @@
 # Harness Delegate
 
-[Harness Delegate](https://docs.harness.io/article/de9t8iiynt-harness-architecture) is a service you run in your local network or VPC to connect your artifact servers, infrastructure, collaboration, and verification providers with the Harness Manager.
+[Harness Delegate](https://developer.harness.io/docs/platform/delegates/delegate-concepts/delegate-overview/) is a service you run in your local network or VPC to connect your artifact servers, infrastructure, collaboration, and verification providers with the Harness Manager.
 
 ## Introduction
 
