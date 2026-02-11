@@ -14,10 +14,7 @@ metadata:
     {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
   {{- end }}
 rules:
-  - apiGroups: ["batch", "apps", "extensions"]
-    resources: ["cronjobs"]
-    verbs: ["get", "list", "watch", "update", "patch"]
   - apiGroups: ["extensions", "apps"]
     resources: ["deployments"]
-    verbs: ["get", "list", "watch", "create", "update", "patch"]
+    verbs: ["get", "patch"]
 {{- end }}
