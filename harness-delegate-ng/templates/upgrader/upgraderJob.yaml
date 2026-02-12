@@ -11,7 +11,7 @@ metadata:
   annotations:
     {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
   {{- end }}
-  name: {{ template "harness-delegate-ng.fullname" . }}-upgrader-job
+  name: {{ include "harness-delegate-ng.upgraderJobName" . }}
   namespace: {{ .Release.Namespace }}
 spec:
   schedule: {{ .Values.upgrader.schedule | quote }}
