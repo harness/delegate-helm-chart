@@ -165,6 +165,12 @@ upgrader:
   # Set tolerations for upgrader pod
   tolerations: []
 
+  # RBAC verbs for the upgrader role
+  # These control which actions the upgrader is allowed to perform on each resource
+  rbac:
+    cronjobVerbs: ["get", "list", "watch", "update", "patch"]
+    deploymentVerbs: ["get", "list", "watch", "create", "update", "patch"]
+
 # This field is DEPRECATED, DON'T OVERRIDE/USE THIS!!
 # To set root/non-root access and other security context use delegateSecurityContext field below.
 # Not removing this field to maintain backward compatibility.

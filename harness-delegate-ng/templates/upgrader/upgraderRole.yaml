@@ -14,7 +14,12 @@ metadata:
     {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
   {{- end }}
 rules:
+  {{- if .Values.upgrader.rbac.cronjobVerbs }}
+  - apiGroups: ["batch", "apps", "extensions"]
+    resources: ["cronjobs"]
+    verbs: {{ .Values.upgrader.rbac.cronjobVerbs | toJson }}
+  {{- end }}
   - apiGroups: ["extensions", "apps"]
     resources: ["deployments"]
-    verbs: ["get", "patch"]
+    verbs: {{ .Values.upgrader.rbac.deploymentVerbs | toJson }}
 {{- end }}
