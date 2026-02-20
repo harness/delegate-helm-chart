@@ -37,8 +37,8 @@ data:
   DELEGATE_CLIENT_CERTIFICATE_PATH: "/etc/mtls/client.crt"
   DELEGATE_CLIENT_CERTIFICATE_KEY_PATH: "/etc/mtls/client.key"
   {{- end }}
-  {{- if .Values.ztsServiceUrl }}
-  ZTS_SERVICE_URL: {{ .Values.ztsServiceUrl | quote }}
+  {{- if .Values.ztsUrl }}
+  ZTS_URL: {{ .Values.ztsUrl | quote }}
   {{- end }}
   {{- if .Values.ztsTimeoutSeconds }}
   ZTS_TIMEOUT_SECONDS: {{ .Values.ztsTimeoutSeconds | quote }}
