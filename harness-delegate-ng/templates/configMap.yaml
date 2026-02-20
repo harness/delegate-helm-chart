@@ -47,5 +47,5 @@ data:
   ZTS_RETRY_COUNT: {{ .Values.ztsRetryCount | quote }}
   {{- end }}
   {{- if .Values.ztsUrl }}
-  ZTS_ENFORCE: {{ if eq (toString .Values.ztsEnforce) "false" }}"false"{{ else }}"true"{{ end }}
+  ZTS_ENFORCE: {{ if hasKey .Values "ztsEnforce" }}{{ .Values.ztsEnforce | quote }}{{ else }}"true"{{ end }}
   {{- end }}
