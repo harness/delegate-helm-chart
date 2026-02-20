@@ -46,4 +46,4 @@ data:
   {{- if .Values.ztsRetryCount }}
   ZTS_RETRY_COUNT: {{ .Values.ztsRetryCount | quote }}
   {{- end }}
-  ZTS_ENFORCE: {{ .Values.ztsEnforce | default "false" | quote }}
+  ZTS_ENFORCE: {{ .Values.ztsEnforce | default "true" | quote }}
