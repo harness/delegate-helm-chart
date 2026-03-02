@@ -117,6 +117,24 @@ Define the delegate token name
 {{- end }}
 
 {{/*
+Compute the upgrader job name with 52-character limit validation.
+CronJob names must be <= 52 characters because Kubernetes appends up to 11 characters
+for Job names created from CronJobs (total must be <= 63).
+*/}}
+{{- define "harness-delegate-ng.upgraderJobName" -}}
+{{- $name := "" -}}
+{{- if .Values.upgrader.jobName -}}
+{{- $name = .Values.upgrader.jobName -}}
+{{- else -}}
+{{- $name = printf "%s-upgrader-job" (include "harness-delegate-ng.fullname" .) -}}
+{{- end -}}
+{{- if gt (len $name) 52 -}}
+{{- fail (printf "upgrader job name '%s' is %d characters, which exceeds the 52-character limit. CronJob names must be <= 52 characters because Kubernetes appends up to 11 characters for generated Job names. Set .Values.upgrader.jobName to a shorter name." $name (len $name)) -}}
+{{- end -}}
+{{- $name -}}
+{{- end -}}
+
+{{/*
 Define the upgrader token name
 */}}
 {{- define "harness-delegate-ng.upgraderDelegateToken" -}}

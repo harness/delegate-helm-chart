@@ -140,6 +140,10 @@ upgrader:
     # repository: null
     # tag: null
   
+  # Custom name for the upgrader CronJob. Must be <= 52 characters.
+  # If not set, defaults to "{delegateName}-upgrader-job"
+  jobName: ""
+
   # Schedule for the upgrader cronjob (cron format)
   schedule: "0 */1 * * *"
 
