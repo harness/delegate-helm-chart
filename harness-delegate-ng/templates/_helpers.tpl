@@ -68,6 +68,8 @@ Fetch access level using kubernetes permission value
     {{- print "view" }}
   {{- else if eq .Values.k8sPermissionsType "NAMESPACE_ADMIN" }}
     {{- print "namespace-admin" }}
+  {{- else if eq .Values.k8sPermissionsType "CI_USER" }}
+    {{- print "ci-user" }}
   {{- end }}
 {{- end }}
 
@@ -76,7 +78,7 @@ Fetch access level using kubernetes permission value
 Check if custom role is provided in k8sPermissionsType
 */}}
 {{- define "harness-delegate-ng.useCustomRole" -}}
-  {{- if or (or (eq .Values.k8sPermissionsType "CLUSTER_ADMIN") (eq .Values.k8sPermissionsType "CLUSTER_VIEWER") ) (eq .Values.k8sPermissionsType "NAMESPACE_ADMIN") }}
+  {{- if or (or (or (eq .Values.k8sPermissionsType "CLUSTER_ADMIN") (eq .Values.k8sPermissionsType "CLUSTER_VIEWER") ) (eq .Values.k8sPermissionsType "NAMESPACE_ADMIN") ) (eq .Values.k8sPermissionsType "CI_USER") }}
   {{- print "false" }}
   {{- else }}
   {{- print "true" }}
