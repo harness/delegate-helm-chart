@@ -1,4 +1,4 @@
-{{- if eq (include "harness-delegate-ng.useCustomRole" .) "true" }}
+{{- if and (ne (.Values.CustomRole | default "") "") (or (not .Values.k8sPermissionsType) (eq .Values.k8sPermissionsType "")) }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -19,6 +19,6 @@ subjects:
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role
-  name: {{ .Values.k8sPermissionsType}}
+  name: {{ .Values.CustomRole }}
   apiGroup: rbac.authorization.k8s.io
 {{- end }}

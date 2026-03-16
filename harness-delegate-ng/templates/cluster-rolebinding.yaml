@@ -1,4 +1,4 @@
-{{- if or (eq .Values.k8sPermissionsType "CLUSTER_ADMIN") (eq .Values.k8sPermissionsType "CLUSTER_VIEWER")}}
+{{- if and .Values.k8sPermissionsType (or (eq .Values.k8sPermissionsType "CLUSTER_ADMIN") (eq .Values.k8sPermissionsType "CLUSTER_VIEWER")) }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:

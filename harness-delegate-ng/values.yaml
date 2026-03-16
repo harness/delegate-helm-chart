@@ -87,11 +87,23 @@ livenessProbe:
 description: ""
 tags: ""
 
-# Permissions for installed delegate, could be CLUSTER_ADMIN, CLUSTER_VIEWER or NAMESPACE_ADMIN
-# For using custom role: Create role in kubernetes cluster and refer role in k8sPermissionsType field.
-# for example if your custom role name is custom-role, then you need to add
-#k8sPermissionsType: "custom-role"
+# Specifies the permissions to assign to the installed delegate.
+# Accepted values: CLUSTER_ADMIN, CLUSTER_VIEWER, NAMESPACE_ADMIN
+#
+# CLUSTER_ADMIN: Grants a ClusterRoleBinding to the built-in 'cluster-admin' role.
+# CLUSTER_VIEWER: Grants a ClusterRoleBinding to the built-in 'view' role.
+# NAMESPACE_ADMIN: Creates and binds a custom Role with full access to the specified namespace.
+#
+# Leave empty to use a custom Role or ClusterRole (see CustomRole/CustomClusterRole below).
 k8sPermissionsType: "CLUSTER_ADMIN"
+
+# Name of a custom Role to bind to the delegate.
+# Cannot be used if k8sPermissionsType is set.
+CustomRole: ""
+
+# Name of a custom ClusterRole to bind to the delegate.
+# Cannot be used if k8sPermissionsType is set.
+CustomClusterRole: ""
 
 # Number of pod replica running delegate image
 replicas: 1

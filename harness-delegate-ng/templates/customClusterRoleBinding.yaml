@@ -1,0 +1,23 @@
+{{- if and (ne (.Values.CustomClusterRole | default "") "") (or (not .Values.k8sPermissionsType) (eq .Values.k8sPermissionsType "")) }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ template "harness-delegate-ng.fullname" . }}-custom-clusterRoleBinding
+  labels:
+    {{- include "harness-delegate-ng.labels" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+      {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations:
+    {{- include "harness-delegate-ng.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "harness-delegate-ng.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ .Values.CustomClusterRole }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
